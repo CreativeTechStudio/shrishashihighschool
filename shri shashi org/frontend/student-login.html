@@ -1,0 +1,152 @@
+<!-- =====================================================
+     student-login.html
+     ===================================================== -->
+<!DOCTYPE html>
+<html lang="hi" id="studentLoginPage">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Login | श्री शशि हाई स्कूल गोरसी</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--navy:#0B2545;--gold:#C9972A;--gold2:#F0BE5A;--saffron:#E8721C;--cream:#FDF6E9;--gray:#6B7280;--shadow:0 4px 24px rgba(11,37,69,0.12);--radius:14px;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0B2545 0%,#1a4a7a 50%,#0d2e52 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;}
+    .login-box{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:100%;max-width:420px;overflow:hidden;}
+    .login-header{background:linear-gradient(135deg,var(--navy),#1a4a7a);padding:2.5rem 2rem;text-align:center;}
+    .login-icon{width:72px;height:72px;border-radius:50%;background:rgba(201,151,42,0.2);border:2px solid rgba(201,151,42,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:2rem;}
+    .login-header h1{color:#fff;font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.3rem;}
+    .login-header p{color:rgba(255,255,255,0.6);font-size:.83rem;}
+    .login-body{padding:2rem;}
+    .form-group{margin-bottom:1.2rem;}
+    .form-label{display:block;font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:.4rem;letter-spacing:.03em;}
+    .form-input{width:100%;border:1.5px solid #E5E7EB;border-radius:10px;padding:.75rem 1rem;font-size:.9rem;font-family:'Poppins',sans-serif;color:var(--navy);background:var(--cream);transition:all .2s;}
+    .form-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,151,42,0.12);background:#fff;}
+    .input-wrap{position:relative;}
+    .input-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--gray);font-size:.9rem;}
+    .form-input.with-icon{padding-left:2.8rem;}
+    .toggle-pass{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray);cursor:pointer;font-size:.9rem;}
+    .btn-login{width:100%;background:linear-gradient(135deg,var(--navy),#1a4a7a);color:#fff;border:none;padding:.9rem;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;margin-top:.5rem;}
+    .btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,37,69,0.3);}
+    .error-box{background:#FEF2F2;border:1px solid #FCA5A5;border-radius:9px;padding:.7rem 1rem;font-size:.83rem;color:#DC2626;margin-top:.8rem;display:none;}
+    .divider{text-align:center;color:var(--gray);font-size:.82rem;margin:1.2rem 0;position:relative;}
+    .divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:#E5E7EB;}
+    .divider::before{left:0;} .divider::after{right:0;}
+    .btn-admission{width:100%;background:linear-gradient(135deg,var(--saffron),#c45e10);color:#fff;border:none;padding:.8rem;border-radius:10px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;}
+    .btn-admission:hover{transform:translateY(-2px);}
+    .login-footer{text-align:center;padding:1.2rem;border-top:1px solid #F3F4F6;font-size:.8rem;color:var(--gray);}
+    .login-footer a{color:var(--saffron);font-weight:600;text-decoration:none;}
+    .back-link{color:rgba(255,255,255,0.7);font-size:.85rem;text-decoration:none;display:flex;align-items:center;gap:.4rem;margin-bottom:1.5rem;transition:color .2s;}
+    .back-link:hover{color:#fff;}
+    .hint{font-size:.72rem;color:var(--gray);margin-top:.4rem;}
+
+    /* Dashboard */
+    .dashboard{display:none;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:100%;max-width:600px;overflow:hidden;}
+    .dash-header{background:linear-gradient(135deg,var(--navy),#1a4a7a);padding:1.8rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+    .dash-header h2{color:#fff;font-size:1.1rem;}
+    .dash-header p{color:rgba(255,255,255,0.6);font-size:.8rem;margin-top:.2rem;}
+    .btn-logout{background:rgba(255,255,255,0.15);color:#fff;border:none;padding:.4rem 1rem;border-radius:7px;font-size:.8rem;cursor:pointer;font-family:'Poppins',sans-serif;}
+    .dash-body{padding:1.8rem;}
+    .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+    .dash-tile{background:var(--cream);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+    .dash-tile:hover{border-color:var(--gold);background:rgba(201,151,42,0.07);}
+    .dash-tile-icon{font-size:1.8rem;margin-bottom:.4rem;}
+    .dash-tile-label{font-size:.78rem;font-weight:500;color:var(--navy);}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+  <!-- LOGIN BOX -->
+  <div class="login-box" id="loginBox">
+    <div class="login-header">
+      <div class="login-icon">🎒</div>
+      <h1>Student Login</h1>
+      <p>छात्र पोर्टल में प्रवेश करें</p>
+    </div>
+    <div class="login-body">
+      <div class="form-group">
+        <label class="form-label">Student ID</label>
+        <div class="input-wrap">
+          <i class="fas fa-id-card input-icon"></i>
+          <input class="form-input with-icon" type="text" id="stuId" placeholder="Enter your Student ID" />
+        </div>
+        <div class="hint">उदाहरण: STU001</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock input-icon"></i>
+          <input class="form-input with-icon" type="password" id="stuPass" placeholder="Enter password" />
+          <button class="toggle-pass" onclick="togglePass('stuPass',this)" type="button"><i class="fas fa-eye"></i></button>
+        </div>
+      </div>
+      <div class="error-box" id="stuError">❌ Invalid Student ID or Password. Please try again.</div>
+      <button class="btn-login" onclick="doStudentLogin()">Login to Portal</button>
+      <div class="divider">or</div>
+      <button class="btn-admission" onclick="location.href='admission.html'">🎓 New Admission? Apply Here</button>
+    </div>
+    <div class="login-footer">
+      Admin? <a href="admin-login.html">Admin Login →</a>
+    </div>
+  </div>
+
+  <!-- STUDENT DASHBOARD -->
+  <div class="dashboard" id="stuDash">
+    <div class="dash-header">
+      <div>
+        <h2 id="dashName">Welcome, Student!</h2>
+        <p id="dashClass">Class — Student Portal</p>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Logout</button>
+    </div>
+    <div class="dash-body">
+      <div class="dash-grid">
+        <div class="dash-tile" onclick="location.href='result.html'"><div class="dash-tile-icon">📊</div><div class="dash-tile-label">My Results</div></div>
+        <div class="dash-tile"><div class="dash-tile-icon">📅</div><div class="dash-tile-label">Timetable</div></div>
+        <div class="dash-tile"><div class="dash-tile-icon">📢</div><div class="dash-tile-label">Notices</div></div>
+        <div class="dash-tile"><div class="dash-tile-icon">💰</div><div class="dash-tile-label">Fee Status</div></div>
+        <div class="dash-tile"><div class="dash-tile-icon">📚</div><div class="dash-tile-label">Assignments</div></div>
+        <div class="dash-tile" onclick="location.href='toppers.html'"><div class="dash-tile-icon">🏆</div><div class="dash-tile-label">Toppers</div></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Demo students — baad mein backend se connect kar sakte ho
+const STUDENTS = {
+  "STU001": { name:"Anshika Rathour", class:"Class 5 — 2025-26" },
+  "STU002": { name:"Dharni Singh Rathour", class:"Class 8 — 2025-26" },
+  "STU003": { name:"Sarjana Rathour", class:"Class 5 — 2023-24" },
+};
+const STU_PASS = "pass123";
+
+function doStudentLogin() {
+  const id = document.getElementById('stuId').value.trim().toUpperCase();
+  const pass = document.getElementById('stuPass').value;
+  const err = document.getElementById('stuError');
+  if(STUDENTS[id] && pass === STU_PASS) {
+    err.style.display = 'none';
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('stuDash').style.display = 'block';
+    document.getElementById('dashName').textContent = 'Welcome, ' + STUDENTS[id].name + '!';
+    document.getElementById('dashClass').textContent = STUDENTS[id].class;
+  } else {
+    err.style.display = 'block';
+  }
+}
+function doLogout() {
+  document.getElementById('loginBox').style.display = 'block';
+  document.getElementById('stuDash').style.display = 'none';
+  document.getElementById('stuId').value = '';
+  document.getElementById('stuPass').value = '';
+}
+function togglePass(id, btn) {
+  const inp = document.getElementById(id);
+  if(inp.type==='password'){inp.type='text'; btn.innerHTML='<i class="fas fa-eye-slash"></i>';}
+  else{inp.type='password'; btn.innerHTML='<i class="fas fa-eye"></i>';}
+}
+document.addEventListener('keydown', e => { if(e.key==='Enter') doStudentLogin(); });
+</script>
+</body>
+</html>

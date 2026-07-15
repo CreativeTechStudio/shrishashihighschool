@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Gallery | श्री शशि हाई स्कूल गोरसी</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* CAT FILTER */
+    .cat-filter {
+      background: #fff;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 12px rgba(11, 37, 69, 0.08);
+      position: sticky;
+      top: 72px;
+      z-index: 99;
+    }
+
+    .cat-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .cat-btn {
+      padding: .4rem 1rem;
+      border-radius: 20px;
+      border: 1.5px solid #E5E7EB;
+      background: #fff;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .cat-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .cat-btn.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    /* FOLDERS GRID */
+    .folders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .folder-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+
+    .folder-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(11, 37, 69, 0.16);
+      border-color: var(--gold);
+    }
+
+    /* FOLDER THUMB — 4 photos in grid */
+    .folder-thumb {
+      height: 180px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .folder-thumb-cell {
+      overflow: hidden;
+      background: var(--navy);
+    }
+
+      .folder-thumb-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .3s;
+    }
+
+    .folder-card:hover .folder-thumb-cell img {
+      transform: scale(1.05);
+    }
+
+    .folder-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, var(--navy), #1a4a7a);
+    }
+
+    .folder-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11, 37, 69, 0.75), transparent 55%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+    }
+
+    .folder-count {
+      background: rgba(201, 151, 42, 0.9);
+      color: var(--navy);
+      padding: .2rem .6rem;
+      border-radius: 20px;
+      font-size: .7rem;
+      font-weight: 700;
+    }
+
+    .folder-body {
+      padding: 1rem 1.2rem;
+    }
+
+    .folder-name {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: .3rem;
+    }
+
+    .folder-desc {
+      font-size: .76rem;
+      color: var(--gray);
+      margin-bottom: .6rem;
+    }
+
+    .folder-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .folder-tag {
+      background: var(--cream);
+      color: var(--saffron);
+      padding: .15rem .6rem;
+      border-radius: 20px;
+      font-size: .68rem;
+      font-weight: 600;
+    }
+
+    /* PHOTOS VIEW */
+    .photos-section {
+      display: none;
+    }
+
+    .back-bar {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: 1.5rem;
+      padding: .8rem 1.2rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-back {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--navy);
+      font-size: .88rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: 'Poppins', sans-serif;
+      padding: .3rem .6rem;
+      border-radius: 7px;
+      transition: var(--transition);
+    }
+
+    .btn-back:hover {
+      background: var(--cream);
+      color: var(--saffron);
+    }
+
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .photo-item {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      position: relative;
+      cursor: pointer;
+      background: var(--navy);
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .3s;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-hover {
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 37, 69, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .photo-item:hover .photo-hover {
+      opacity: 1;
+    }
+
+    .photo-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(11, 37, 69, 0.8));
+      padding: .6rem .8rem;
+    }
+
+    .photo-caption p {
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 500;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: .78rem;
+      gap: .5rem;
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lb-img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-prev,
+    .lb-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .lb-prev {
+      left: 1.5rem;
+    }
+
+    .lb-next {
+      right: 1.5rem;
+    }
+
+    .lb-prev:hover,
+    .lb-next:hover {
+      background: rgba(201, 151, 42, 0.5);
+    }
+
+    .lb-caption {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .85rem;
+      margin-top: 1rem;
+    }
+
+    .lb-counter {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: .75rem;
+      margin-top: .3rem;
+    }
+
+    /* YT */
+    .yt-section {
+      background: var(--navy);
+      padding: 3.5rem 0;
+    }
+
+    .yt-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .yt-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .yt-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: .4rem;
+    }
+
+    .yt-header p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: .88rem;
+    }
+
+    .yt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .yt-embed {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .yt-embed iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: block;
+      border: none;
+    }
+
+    @media(max-width:900px) {
+      .yt-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:600px) {
+      .folders-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .photos-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .yt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body data-page="gallery">
+  <div class="page-header">
+    <span class="page-header-badge">📸 Photo Gallery | फोटो गैलरी</span>
+    <h1>School Gallery</h1>
+    <p>हमारे विद्यालय की यादगार झलकियाँ — Memorable Moments</p>
+  </div>
+  <div class="cat-filter">
+    <div class="cat-inner" id="catButtons"></div>
+  </div>
+  <div class="main">
+    <div id="foldersSection">
+      <div class="folders-grid" id="foldersGrid"></div>
+    </div>
+    <div class="photos-section" id="photosSection">
+      <div class="back-bar">
+        <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Gallery</button>
+        <span style="color:#E5E7EB">|</span>
+        <strong id="photoFolderTitle" style="font-size:.93rem;color:var(--navy)">—</strong>
+        <span id="photoCount" style="font-size:.8rem;color:var(--gray)"></span>
+      </div>
+      <div class="photos-grid" id="photosGrid"></div>
+    </div>
+  </div>
+  <!-- YT -->
+  <div class="yt-section">
+    <div class="yt-inner">
+      <div class="yt-header">
+        <h2>📹 School Videos</h2>
+        <p>हमारे विद्यालय की विशेष झलकियाँ YouTube पर</p>
+      </div>
+      <div class="yt-grid">
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/I4tw0FCXAAY" allowfullscreen></iframe></div>
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/mvSyinw-pYk" allowfullscreen></iframe></div>
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/K1PYD6ZRDKw" allowfullscreen></iframe></div>
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/gMYsOI9ZWAo" allowfullscreen></iframe></div>
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/3hTwkIHYNWA" allowfullscreen></iframe></div>
+      </div>
+    </div>
+  </div>
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" onclick="closeLB()">✕</button>
+    <button class="lb-prev" onclick="lbPrev()">&#8592;</button>
+    <img class="lb-img" id="lbImg" src="" alt="" />
+    <button class="lb-next" onclick="lbNext()">&#8594;</button>
+    <div class="lb-caption" id="lbCap"></div>
+    <div class="lb-counter" id="lbCtr"></div>
+  </div>
+  <script src="nav.js"></script>
+  <script>
+    const FOLDERS = [
+      {
+        id: "republic-day", name: "गणतंत्र दिवस — Republic Day", icon: "🇮🇳", cat: "republic-day", desc: "26 January celebration", color: "#0B2545",
+        images: [
+          { src: "images/gallery/republic-day/photo1.jpg", cap: "Flag Hoisting Ceremony" },
+          { src: "images/gallery/republic-day/photo2.jpg", cap: "Students in Traditional Dress" },
+          { src: "images/gallery/republic-day/photo3.jpg", cap: "India Map Decoration" },
+          { src: "images/gallery/republic-day/photo4.jpg", cap: "Republic Day Parade" },
+          { src: "images/gallery/republic-day/photo5.jpg", cap: "Morning Assembly" }
+        ]
+      },
+      {
+        id: "independence-day", name: "स्वतंत्रता दिवस — Independence Day", icon: "🎗️", cat: "independence-day", desc: "15 August celebration", color: "#1a6b3c",
+        images: [
+          { src: "images/gallery/independence-day/photo1.jpg", cap: "Swachhata Hi Seva Rally 2024" },
+          { src: "images/gallery/independence-day/photo2.jpg", cap: "Students March" },
+          { src: "images/gallery/independence-day/photo3.jpg", cap: "Independence Day Rally" },
+          { src: "images/gallery/independence-day/photo4.jpg", cap: "Flag March Through Village" },
+          { src: "images/gallery/independence-day/photo5.jpg", cap: "Morning Assembly 15 August" }
+        ]
+      },
+      {
+        id: "science-practical", name: "प्रायोगिक — Practicals", icon: "🎭", cat: "science-practical", desc: "School Practical — Chemistry, Practical, Experiment", color: "#7C2D12",
+        images: [
+          { src: "images/gallery/science-practical/photo1.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo2.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo3.jpg", cap: "Experiment by Students" },
+          { src: "images/gallery/science-practical/photo4.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo5.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo6.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo7.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo8.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo9.jpg", cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo10.jpg",cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo11.jpg",cap: "Experiment by Students"},
+          { src: "images/gallery/science-practical/photo12.jpg",cap: "Experiment by Students"}
+        ]
+      },
+      {
+        id: "saraswati-puja", name: "सरस्वती पूजा", icon: "🙏", cat: "saraswati-puja", desc: "Saraswati Puja celebration", color: "#7C3AED",
+        images: [
+          { src: "images/gallery/saraswati-puja/photo1.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo2.jpg", cap: "School Puja Ceremony" },
+          { src: "images/gallery/saraswati-puja/photo3.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo4.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo5.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo6.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo7.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo8.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo9.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo10.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo11.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo12.jpg", cap: "Saraswati Puja Decoration" },
+          { src: "images/gallery/saraswati-puja/photo13.jpg", cap: "Saraswati Puja Decoration" }
+
+        ]
+      },
+      {
+        id: "rangoli", name: "रंगोली प्रतियोगिता", icon: "🎨", cat: "rangoli", desc: "Students ki beautiful rangoli", color: "#DB2777",
+        images: [
+          { src: "images/gallery/rangoli/photo1.jpg", cap: "Beautiful Rangoli by Students" },
+          { src: "images/gallery/rangoli/photo2.jpg", cap: "Rangoli Competition" },
+          { src: "images/gallery/rangoli/photo3.jpg", cap: "Colourful Rangoli Designs" },
+          { src: "images/gallery/rangoli/photo4.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo5.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo6.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo7.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo8.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo9.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo10.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo11.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo12.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo13.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo14.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo15.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo16.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo17.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo18.jpg", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo19.png", cap: "Students with Rangoli" },
+          { src: "images/gallery/rangoli/photo20.png", cap: "Students with Rangoli" },
+
+            
+
+        ]
+      },
+      {
+        id: "school-life", name: "विद्यालय जीवन — School Life", icon: "🏫", cat: "school-life", desc: "Morning assembly, prayers & everyday moments", color: "#0369A1",
+        images: [
+          { src: "images/gallery/school-life/photo1.jpg", cap: "Morning Assembly" },
+          { src: "images/gallery/school-life/photo2.jpg", cap: "Morning Prayer" },
+          { src: "images/gallery/school-life/photo3.jpg", cap: "Yoga Session" },
+          { src: "images/gallery/school-life/photo4.jpg", cap: "School Building & Students" },
+          { src: "images/gallery/school-life/photo5.png", cap: "Class room " },
+          { src: "images/gallery/school-life/photo6.jpg", cap: "Stunt by kids" },
+          { src: "images/gallery/school-life/photo7.jpg", cap: "stunt by girls" },
+          { src: "images/gallery/school-life/photo8.jpg", cap: "एक कदम स्वच्छता की ओर " },
+          { src: "images/gallery/school-life/photo9.jpg", cap: "assembly in school ground" },
+          { src: "images/gallery/school-life/photo10.jpg", cap: "Girls performance on stage" },
+          { src: "images/gallery/school-life/photo11.jpg", cap: "Memorable moement" },
+          { src: "images/gallery/school-life/photo12.jpg", cap: "cultural performance" },
+        ]
+      },
+      {
+        id: "adventure-trip", name: "शैक्षिक भ्रमण — Kanan Pendari Zoo", icon: "🦁", cat: "adventure-trip", desc: "Kanan Pendari Zoo, Bilaspur trip", color: "#15803D",
+        images: [
+          { src: "images/gallery/adventure-trip/photo1.jpg", cap: "Group Photo at Kanan Pendari Zoo" },
+          { src: "images/gallery/adventure-trip/photo2.jpg", cap: "White Tiger" },
+          { src: "images/gallery/adventure-trip/photo3.jpg", cap: "Crocodiles at Zoo" },
+          { src: "images/gallery/adventure-trip/photo4.jpg", cap: "Lion & Lioness" },
+          { src: "images/gallery/adventure-trip/photo5.jpg", cap: "Incredibal Zoo" },
+          { src: "images/gallery/adventure-trip/photo6.jpg", cap: "Incredibal Zoo" },
+          { src: "images/gallery/adventure-trip/photo7.jpg", cap: "Incredibal Zoo" },
+          { src: "images/gallery/adventure-trip/photo8.jpg", cap: "Incredibal Zoo" },
+          { src: "images/gallery/adventure-trip/photo9.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo10.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo11.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo12.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo13.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo14.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo15.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo16.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo17.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo18.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo19.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo20.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo21.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo22.jpg", cap: "Picnic" },
+          { src: "images/gallery/adventure-trip/photo23.jpg", cap: "Picnic" }
+
+
+
+        ]
+      },
+      {
+        id: "cultural", name: "सांस्कृतिक कार्यक्रम", icon: "💃", cat: "cultural", desc: "Classical dance, folk dance & performances", color: "#B45309",
+        images: [
+          { src: "images/gallery/cultural/photo1.jpg", cap: "Classical Dance Performance" },
+          { src: "images/gallery/cultural/photo2.jpg", cap: "Folk Dance" },
+          { src: "images/gallery/cultural/photo3.jpg", cap: "Girls Dance Performance" },
+          { src: "images/gallery/cultural/photo4.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo5.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo6.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo7.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo8.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo9.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo10.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo11.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo12.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo13.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo14.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo15.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo16.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo17.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo18.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo19.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo20.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo21.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo22.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo23.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo24.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo25.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo26.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo27.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo28.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo29.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo30.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo31.jpg", cap: "Students" },
+          { src: "images/gallery/cultural/photo32.jpg", cap: "Students" },
+          
+        ]
+      },
+      {
+        id: "janmashtami", name: "School Events", icon: "🪈", cat: "cultural", desc: "Janmashtami, Holi and other celebrations", color: "#1D4ED8",
+        images: [
+          { src: "images/gallery/School-Events/photo1.jpg", cap: "Student as Lord Krishna" },
+          { src: "images/gallery/School-Events/photo2.jpg", cap: "Beautiful student with traditional dress" },
+          { src: "images/gallery/School-Events/photo3.jpg", cap: "Stunt Practice" },
+          { src: "images/gallery/School-Events/photo4.jpg", cap: "Beautiful student with traditional dress" }
+
+        ]
+      },
+    ];
+
+    const CATS = ['all', 'republic-day', 'independence-day', 'science-practical', 'saraswati-puja', 'rangoli', 'school-life', 'adventure-trip', 'cultural'];
+    const CAT_LABELS = { 'all': '🏫 All', 'republic-day': '🇮🇳 Republic Day', 'independence-day': '🎗️ Independence Day', 'science-practical': '🎭 science-practical', 'saraswati-puja': '🙏 Saraswati Puja', 'rangoli': '🎨 Rangoli', 'school-life': '🏫 School Life', 'adventure-trip': '🦁 Adventure Trip', 'cultural': '💃 Cultural' };
+    let currentCat = 'all', currentFolder = null, lbImages = [], lbIndex = 0;
+
+    // BUILD CAT BUTTONS
+    document.getElementById('catButtons').innerHTML = CATS.map(c =>
+      `<button class="cat-btn ${c === 'all' ? 'active' : ''}" onclick="filterCat('${c}',this)">${CAT_LABELS[c]}</button>`
+    ).join('');
+
+    function renderFolders() {
+      const filtered = currentCat === 'all' ? FOLDERS : FOLDERS.filter(f => f.cat === currentCat);
+      document.getElementById('foldersGrid').innerHTML = filtered.map((folder, i) => {
+        // Show up to 4 thumb images (or placeholder if not loaded)
+        const thumbCells = [0, 1, 2, 3].map((ti) => {
+          const img = folder.images[ti];
+          if (!img) return `<div class="folder-thumb-cell"><div class="folder-thumb-placeholder">${folder.icon}</div></div>`;
+          return `<div class="folder-thumb-cell"><img src="${img.src}" alt="${img.cap}" onerror="this.parentElement.innerHTML='<div class=\\'folder-thumb-placeholder\\'>${folder.icon}</div>'"/></div>`;
+        }).join('');
+        return `<div class="folder-card fade-up" style="animation-delay:${i * 0.06}s" onclick="openFolder('${folder.id}')">
+      <div class="folder-thumb">${thumbCells}<div class="folder-overlay"><span class="folder-count">${folder.images.length} Photos</span></div></div>
+      <div class="folder-body">
+        <div class="folder-name">${folder.icon} ${folder.name}</div>
+        <div class="folder-desc">${folder.desc}</div>
+        <div class="folder-footer"><span class="folder-tag">${folder.images.length} Photos</span><i class="fas fa-arrow-right" style="color:var(--gold);font-size:.85rem"></i></div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    function openFolder(id) {
+      currentFolder = FOLDERS.find(f => f.id === id);
+      if (!currentFolder) return;
+      lbImages = currentFolder.images;
+      document.getElementById('foldersSection').style.display = 'none';
+      document.getElementById('photosSection').style.display = 'block';
+      document.getElementById('photoFolderTitle').textContent = currentFolder.name;
+      document.getElementById('photoCount').textContent = `${currentFolder.images.length} photos`;
+      document.getElementById('photosGrid').innerHTML = currentFolder.images.map((img, i) => `
+    <div class="photo-item fade-up" style="animation-delay:${i * 0.04}s" onclick="openLB(${i})">
+      <img src="${img.src}" alt="${img.cap}" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'><span style=\\'font-size:2rem\\'>${currentFolder.icon}</span><span>${img.cap}</span></div>'"/>
+      <div class="photo-hover"><i class="fas fa-expand" style="color:#fff;font-size:1.5rem"></i></div>
+      <div class="photo-caption"><p>${img.cap}</p></div>
+    </div>`).join('');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBack() {
+      document.getElementById('foldersSection').style.display = 'block';
+      document.getElementById('photosSection').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterCat(cat, btn) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (document.getElementById('photosSection').style.display === 'block') goBack();
+      renderFolders();
+    }
+
+    function openLB(i) { lbIndex = i; updateLB(); document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLB() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+    function updateLB() {
+      const img = lbImages[lbIndex];
+      document.getElementById('lbImg').src = img.src;
+      document.getElementById('lbCap').textContent = img.cap;
+      document.getElementById('lbCtr').textContent = `${lbIndex + 1} / ${lbImages.length}`;
+    }
+    function lbPrev() { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; updateLB(); }
+    function lbNext() { lbIndex = (lbIndex + 1) % lbImages.length; updateLB(); }
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowLeft') lbPrev();
+      if (e.key === 'ArrowRight') lbNext();
+      if (e.key === 'Escape') closeLB();
+    });
+    document.getElementById('lightbox').addEventListener('click', e => { if (e.target === document.getElementById('lightbox')) closeLB(); });
+    renderFolders();
+  </script>
+</body>
+
+</html>

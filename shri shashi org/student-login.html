@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Login | श्री शशि हाई स्कूल गोरसी</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--navy:#0B2545;--gold:#C9972A;--gold2:#F0BE5A;--saffron:#E8721C;--cream:#FDF6E9;--gray:#6B7280;--green:#10B981;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0B2545 0%,#1a4a7a 50%,#0d2e52 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;}
+    .back-link{color:rgba(255,255,255,0.7);font-size:.85rem;text-decoration:none;display:flex;align-items:center;gap:.4rem;margin-bottom:1.5rem;}
+    .back-link:hover{color:#fff;}
+    .login-box{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:100%;max-width:450px;overflow:hidden;}
+    .login-header{background:linear-gradient(135deg,var(--navy),#1a4a7a);padding:2.2rem 2rem;text-align:center;}
+    .login-icon{width:68px;height:68px;border-radius:50%;background:rgba(201,151,42,0.2);border:2px solid rgba(201,151,42,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.9rem;}
+    .login-header h1{color:#fff;font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:.3rem;}
+    .login-header p{color:rgba(255,255,255,0.6);font-size:.82rem;}
+
+    .tabs{display:flex;background:#f3f4f6;}
+    .tab-btn{flex:1;padding:.9rem;background:none;border:none;font-size:.85rem;font-weight:600;color:var(--gray);cursor:pointer;font-family:'Poppins',sans-serif;border-bottom:3px solid transparent;transition:all .2s;}
+    .tab-btn.active{color:var(--navy);background:#fff;border-bottom-color:var(--gold);}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;}
+
+    .login-body{padding:1.8rem 2rem 2rem;}
+    .form-group{margin-bottom:1.05rem;}
+    .form-label{display:block;font-size:.77rem;font-weight:600;color:var(--navy);margin-bottom:.4rem;}
+    .form-label .opt{color:var(--gray);font-weight:400;}
+    .form-input,.form-select{width:100%;border:1.5px solid #E5E7EB;border-radius:10px;padding:.7rem 1rem;font-size:.87rem;font-family:'Poppins',sans-serif;color:var(--navy);background:var(--cream);transition:all .2s;}
+    .form-input:focus,.form-select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,151,42,0.12);background:#fff;}
+    .input-wrap{position:relative;}
+    .input-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--gray);font-size:.86rem;}
+    .form-input.wi{padding-left:2.7rem;}
+    .toggle-pass{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray);cursor:pointer;font-size:.86rem;}
+    .btn-login{width:100%;background:linear-gradient(135deg,var(--navy),#1a4a7a);color:#fff;border:none;padding:.85rem;border-radius:10px;font-size:.92rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;margin-top:.4rem;display:flex;align-items:center;justify-content:center;gap:.5rem;}
+    .btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,37,69,0.3);}
+    .btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+    .btn-signup{background:linear-gradient(135deg,var(--saffron),#c45e10);}
+    .error-box{background:#FEF2F2;border:1px solid #FCA5A5;border-radius:9px;padding:.65rem 1rem;font-size:.8rem;color:#DC2626;margin-top:.7rem;display:none;}
+    .success-box{background:#F0FFF4;border:1px solid #6EE7B7;border-radius:9px;padding:.65rem 1rem;font-size:.8rem;color:#065F46;margin-top:.7rem;display:none;}
+    .pass-hint{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:9px;padding:.7rem 1rem;font-size:.76rem;color:#075985;margin-bottom:1.1rem;line-height:1.5;}
+    .spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .login-footer{text-align:center;padding:1.1rem;border-top:1px solid #F3F4F6;font-size:.78rem;color:var(--gray);}
+    .login-footer a{color:var(--saffron);font-weight:600;text-decoration:none;}
+    .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+
+    /* DASHBOARD */
+    .dashboard{display:none;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.25);width:100%;max-width:640px;overflow:hidden;}
+    .dash-header{background:linear-gradient(135deg,var(--navy),#1a4a7a);padding:1.7rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;}
+    .dash-welcome h2{color:#fff;font-size:1.05rem;}
+    .dash-welcome p{color:rgba(255,255,255,0.6);font-size:.78rem;margin-top:.2rem;}
+    .btn-logout{background:rgba(255,255,255,0.15);color:#fff;border:none;padding:.4rem 1rem;border-radius:7px;font-size:.78rem;cursor:pointer;font-family:'Poppins',sans-serif;}
+    .btn-logout:hover{background:rgba(255,255,255,0.25);}
+    .dash-body{padding:1.7rem;}
+    .dash-info{background:var(--cream);border-radius:12px;padding:1.1rem;margin-bottom:1.4rem;display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+    .info-item{display:flex;flex-direction:column;gap:.15rem;}
+    .info-label{font-size:.68rem;font-weight:600;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;}
+    .info-val{font-size:.87rem;font-weight:600;color:var(--navy);}
+    .dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+    .dash-tile{background:var(--cream);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+    .dash-tile:hover{border-color:var(--gold);background:rgba(201,151,42,0.07);transform:translateY(-3px);}
+    .dash-tile-icon{font-size:1.7rem;margin-bottom:.4rem;}
+    .dash-tile-label{font-size:.76rem;font-weight:500;color:var(--navy);}
+    @media(max-width:560px){.dash-grid{grid-template-columns:repeat(2,1fr);}.dash-info{grid-template-columns:1fr;}.fg-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+  <!-- LOGIN/SIGNUP BOX -->
+  <div class="login-box" id="loginBox">
+    <div class="login-header">
+      <div class="login-icon">🎒</div>
+      <h1>Student Portal</h1>
+      <p>छात्र पोर्टल में प्रवेश करें</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" id="tabSignupBtn" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="tab-panel active" id="panelLogin">
+      <div class="login-body">
+        <div class="form-group">
+          <label class="form-label">Samagra ID / Email</label>
+          <div class="input-wrap">
+            <i class="fas fa-id-card input-icon"></i>
+            <input class="form-input wi" type="text" id="loginId" placeholder="Samagra ID or Gmail"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password <span class="opt">(your mobile number)</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock input-icon"></i>
+            <input class="form-input wi" type="password" id="loginPass" placeholder="Enter your mobile number"/>
+            <button class="toggle-pass" onclick="togglePass('loginPass',this)" type="button"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="error-box" id="loginErr"></div>
+        <button class="btn-login" id="loginBtn" onclick="doStudentLogin()">
+          <span id="loginText">Login to Portal</span>
+          <div class="spinner" id="loginSpinner"></div>
+        </button>
+      </div>
+      <div class="login-footer">Admin? <a href="admin-login.html">Admin Login →</a></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="tab-panel" id="panelSignup">
+      <div class="login-body">
+        <div class="pass-hint">
+          🔑 <strong>Your password will always be your mobile number.</strong><br/>
+          आपका पासवर्ड हमेशा आपका मोबाइल नंबर रहेगा। (Admin baad mein change kar sakta hai)
+        </div>
+        <div class="form-group">
+          <label class="form-label">Full Name / पूरा नाम</label>
+          <div class="input-wrap">
+            <i class="fas fa-user input-icon"></i>
+            <input class="form-input wi" type="text" id="suName" placeholder="Student full name"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Samagra ID or Gmail <span class="opt">(your username)</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-id-card input-icon"></i>
+            <input class="form-input wi" type="text" id="suLoginId" placeholder="Samagra ID or Gmail address"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile Number <span class="opt">(this is your password)</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-phone input-icon"></i>
+            <input class="form-input wi" type="tel" id="suMobile" placeholder="10-digit mobile number"/>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="form-group">
+            <label class="form-label">Class</label>
+            <select class="form-select" id="suClass">
+              <option value="">Select</option>
+              <option>KG 1</option><option>KG 2</option>
+              <option>Class 1</option><option>Class 2</option><option>Class 3</option>
+              <option>Class 4</option><option>Class 5</option><option>Class 6</option>
+              <option>Class 7</option><option>Class 8</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Roll No <span class="opt">(optional)</span></label>
+            <input class="form-input" type="text" id="suRoll" placeholder="Roll number"/>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="form-group">
+            <label class="form-label">Father's Name</label>
+            <input class="form-input" type="text" id="suFather" placeholder="Father's name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date of Birth</label>
+            <input class="form-input" type="date" id="suDob"/>
+          </div>
+        </div>
+        <div class="error-box" id="signupErr"></div>
+        <div class="success-box" id="signupSuccess"></div>
+        <button class="btn-login btn-signup" id="signupBtn" onclick="doStudentSignup()">
+          <span id="signupText">Create My Account</span>
+          <div class="spinner" id="signupSpinner"></div>
+        </button>
+      </div>
+      <div class="login-footer">Already registered? <a href="#" onclick="switchTab('login');return false;">Login →</a></div>
+    </div>
+  </div>
+
+  <!-- STUDENT DASHBOARD -->
+  <div class="dashboard" id="stuDash">
+    <div class="dash-header">
+      <div class="dash-welcome">
+        <h2 id="dashWelcome">Welcome, Student!</h2>
+        <p id="dashSub">Student Portal</p>
+      </div>
+      <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+    <div class="dash-body">
+      <div class="dash-info" id="dashInfo"></div>
+      <div class="dash-grid">
+        <div class="dash-tile" onclick="location.href='result.html'"><div class="dash-tile-icon">📊</div><div class="dash-tile-label">My Results</div></div>
+        <div class="dash-tile" onclick="location.href='toppers.html'"><div class="dash-tile-icon">🏆</div><div class="dash-tile-label">Toppers</div></div>
+        <div class="dash-tile" onclick="location.href='gallery.html'"><div class="dash-tile-icon">📸</div><div class="dash-tile-label">Gallery</div></div>
+        <div class="dash-tile" onclick="location.href='achievements.html'"><div class="dash-tile-icon">🎖️</div><div class="dash-tile-label">Achievements</div></div>
+        <div class="dash-tile" onclick="location.href='admission.html'"><div class="dash-tile-icon">📋</div><div class="dash-tile-label">Admission</div></div>
+        <div class="dash-tile" onclick="location.href='index.html'"><div class="dash-tile-icon">🏠</div><div class="dash-tile-label">Home</div></div>
+      </div>
+    </div>
+  </div>
+
+<script src="api-config.js"></script>
+<script>
+  function switchTab(tab) {
+    document.getElementById('tabLoginBtn').classList.toggle('active', tab==='login');
+    document.getElementById('tabSignupBtn').classList.toggle('active', tab==='signup');
+    document.getElementById('panelLogin').classList.toggle('active', tab==='login');
+    document.getElementById('panelSignup').classList.toggle('active', tab==='signup');
+  }
+
+  function togglePass(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type==='password' ? 'text' : 'password';
+    btn.innerHTML = inp.type==='password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+  }
+
+  function showDashboard(student) {
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('stuDash').style.display = 'block';
+    document.getElementById('dashWelcome').textContent = 'Welcome, ' + (student.name || 'Student') + '!';
+    document.getElementById('dashSub').textContent = (student.className||'') + (student.rollNo ? ' | Roll: ' + student.rollNo : '');
+    document.getElementById('dashInfo').innerHTML = `
+      <div class="info-item"><div class="info-label">Name</div><div class="info-val">${student.name||'—'}</div></div>
+      <div class="info-item"><div class="info-label">Class</div><div class="info-val">${student.className||'—'}</div></div>
+      <div class="info-item"><div class="info-label">Login ID</div><div class="info-val">${student.loginId||'—'}</div></div>
+      <div class="info-item"><div class="info-label">Father</div><div class="info-val">${student.fatherName||'—'}</div></div>`;
+  }
+
+  // If already logged in
+  (async function checkExisting() {
+    const token = localStorage.getItem('sshs_token');
+    const role = localStorage.getItem('sshs_role');
+    if (token && role === 'student') {
+      try {
+        const data = await apiFetch('/api/student/me');
+        showDashboard(data.student);
+      } catch(e) {
+        localStorage.removeItem('sshs_token');
+        localStorage.removeItem('sshs_role');
+      }
+    }
+  })();
+
+  async function doStudentLogin() {
+    const loginId = document.getElementById('loginId').value.trim();
+    const pass    = document.getElementById('loginPass').value;
+    const err     = document.getElementById('loginErr');
+    const btn     = document.getElementById('loginBtn');
+    const spin    = document.getElementById('loginSpinner');
+    const txt     = document.getElementById('loginText');
+    err.style.display='none';
+    if (!loginId || !pass) { err.textContent='⚠ Login ID and password required'; err.style.display='block'; return; }
+
+    btn.disabled=true; spin.style.display='block'; txt.textContent='Logging in...';
+    try {
+      const data = await apiFetch('/api/student/login', { method:'POST', body: JSON.stringify({ loginId, password: pass }) });
+      localStorage.setItem('sshs_token', data.token);
+      localStorage.setItem('sshs_role', 'student');
+      showDashboard(data.student);
+    } catch(e) {
+      err.textContent = '❌ ' + e.message;
+      err.style.display = 'block';
+    }
+    btn.disabled=false; spin.style.display='none'; txt.textContent='Login to Portal';
+  }
+
+  async function doStudentSignup() {
+    const name      = document.getElementById('suName').value.trim();
+    const loginId   = document.getElementById('suLoginId').value.trim();
+    const mobile    = document.getElementById('suMobile').value.trim();
+    const className = document.getElementById('suClass').value;
+    const rollNo    = document.getElementById('suRoll').value.trim();
+    const fatherName= document.getElementById('suFather').value.trim();
+    const dob       = document.getElementById('suDob').value;
+    const err       = document.getElementById('signupErr');
+    const success   = document.getElementById('signupSuccess');
+    const btn       = document.getElementById('signupBtn');
+    const spin      = document.getElementById('signupSpinner');
+    const txt       = document.getElementById('signupText');
+    err.style.display='none'; success.style.display='none';
+
+    if (!name || !loginId || !mobile) { err.textContent='⚠ Name, Samagra ID/Gmail, and mobile number are required'; err.style.display='block'; return; }
+    const cleanMobile = mobile.replace(/\D/g,'');
+    if (cleanMobile.length < 10) { err.textContent='⚠ Enter a valid 10-digit mobile number'; err.style.display='block'; return; }
+
+    btn.disabled=true; spin.style.display='block'; txt.textContent='Creating account...';
+    try {
+      const data = await apiFetch('/api/student/signup', {
+        method:'POST',
+        body: JSON.stringify({ loginId, mobile, name, fatherName, dob, className, rollNo })
+      });
+      localStorage.setItem('sshs_token', data.token);
+      localStorage.setItem('sshs_role', 'student');
+      success.textContent = '✅ Account created! Your password is your mobile number.';
+      success.style.display = 'block';
+      setTimeout(()=> showDashboard(data.student), 1000);
+    } catch(e) {
+      err.textContent = '❌ ' + e.message;
+      err.style.display = 'block';
+      btn.disabled=false; spin.style.display='none'; txt.textContent='Create My Account';
+    }
+  }
+
+  function doLogout() {
+    localStorage.removeItem('sshs_token');
+    localStorage.removeItem('sshs_role');
+    document.getElementById('loginBox').style.display='block';
+    document.getElementById('stuDash').style.display='none';
+    document.getElementById('loginId').value='';
+    document.getElementById('loginPass').value='';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    if (document.getElementById('panelLogin').classList.contains('active')) doStudentLogin();
+  });
+</script>
+</body>
+</html>

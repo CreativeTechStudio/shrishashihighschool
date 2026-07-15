@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>श्री शशि हाई स्कूल गोरसी | Shri Shashi High School Gorsi</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ── HERO SLIDER ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 580px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .slide-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-fallback {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Lighter overlay so background images show clearly */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(to bottom, rgba(11, 37, 69, 0.12) 0%, rgba(11, 37, 69, 0.28) 50%, rgba(11, 37, 69, 0.72) 100%);
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero-badge {
+      background: rgba(18, 12, 1, 0.504);
+      border: 1px solid rgba(201, 151, 42, 0.5);
+      color: var(--gold2);
+      padding: .35rem 1.1rem;
+      border-radius: 20px;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: .4rem;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-title-en {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      color: var(--gold2);
+      margin-bottom: .8rem;
+      font-style: italic;
+    }
+
+    .hero-slogan {
+      background: rgba(11, 8, 0, 0.592);
+      border: 1px solid rgba(201, 151, 42, 0.4);
+      border-radius: 10px;
+      padding: .5rem 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--gold2);
+      font-size: clamp(.78rem, 1.4vw, .96rem);
+      font-style: italic;
+      font-family: 'Tiro Devanagari Hindi', serif;
+    }
+
+    .hero-tagline {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: clamp(.83rem, 1.4vw, 1rem);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-hero-primary {
+      background: linear-gradient(135deg, var(--gold), #b8841f);
+      color: var(--navy);
+      border: none;
+      padding: .85rem 2.2rem;
+      border-radius: 10px;
+      font-size: .98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(201, 151, 42, 0.4);
+    }
+
+    .btn-hero-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      padding: .85rem 2.2rem;
+      border-radius: 10px;
+      font-size: .98rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-hero-outline:hover {
+      border-color: var(--gold2);
+      color: var(--gold2);
+    }
+
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 4;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+
+    .slider-arrow:hover {
+      background: rgba(201, 151, 42, 0.5);
+    }
+
+    .arrow-left {
+      left: 1.5rem;
+    }
+
+    .arrow-right {
+      right: 1.5rem;
+    }
+
+    .slider-dots {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      gap: .5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+    }
+
+    .dot.active {
+      background: var(--gold);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* ── STATS ── */
+    .stats-bar {
+      background: var(--navy);
+      padding: 1.8rem 2rem;
+    }
+
+    .stats-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: .5rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold2);
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: .2rem;
+    }
+
+    /* ── NOTICES ── */
+    .notices-bg {
+      background: linear-gradient(135deg, #f0f4ff, var(--cream));
+      padding: 4rem 0;
+    }
+
+    .notices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .notif-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--gold);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .notif-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(11, 37, 69, 0.15);
+    }
+
+    .notif-card.highlight {
+      border-left-color: var(--saffron);
+      background: linear-gradient(135deg, #fffbf0, #fff);
+    }
+
+    .notif-card.green {
+      border-left-color: var(--green);
+    }
+
+    .notif-card.red {
+      border-left-color: var(--red);
+    }
+
+    .nc-type {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--saffron);
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+
+    .nc-title {
+      font-size: .97rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: .5rem;
+      line-height: 1.5;
+    }
+
+    .nc-date {
+      font-size: .76rem;
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about-heading {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: 1.6rem;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .about-text p {
+      color: var(--gray);
+      line-height: 1.8;
+      font-size: .9rem;
+      margin-bottom: 1rem;
+    }
+
+    .slogan-box {
+      background: linear-gradient(135deg, #fffbf0, #fff8e7);
+      border: 1.5px solid var(--gold);
+      border-radius: 10px;
+      padding: .9rem 1.2rem;
+      margin: .8rem 0;
+      font-style: italic;
+      color: var(--navy);
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: .95rem;
+    }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+      margin-top: 1.5rem;
+    }
+
+    .feat-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .7rem;
+      padding: .8rem;
+      background: var(--cream);
+      border-radius: 10px;
+    }
+
+    .feat-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    .feat-text {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+
+    .about-map {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      height: 380px;
+      border: 3px solid var(--gold);
+    }
+
+    .about-map iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── TOPPERS ── */
+    .toppers-bg {
+      background: var(--navy);
+      padding: 4rem 0;
+    }
+
+    .toppers-bg .sec-title {
+      color: #fff;
+    }
+
+    .toppers-bg .sec-eyebrow {
+      color: var(--gold2);
+    }
+
+    .toppers-preview {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .tp-card {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius);
+      padding: 1.8rem 1.2rem;
+      text-align: center;
+      border: 1px solid rgba(201, 151, 42, 0.2);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .tp-card:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-5px);
+      border-color: var(--gold);
+    }
+
+    .tp-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      margin: 0 auto .8rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      border: 2px solid rgba(201, 151, 42, 0.4);
+    }
+
+    .tp-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tp-name {
+      font-size: .9rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: .2rem;
+    }
+
+    .tp-class {
+      font-size: .73rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: .5rem;
+    }
+
+    .tp-pct {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold2);
+    }
+
+    .tp-rank {
+      font-size: .7rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: .2rem;
+    }
+
+    .dist-badge {
+      background: var(--gold);
+      color: var(--navy);
+      font-size: .63rem;
+      font-weight: 700;
+      padding: .15rem .5rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: .3rem;
+    }
+
+    .view-more {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+
+    .btn-view-more {
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold2);
+      padding: .75rem 2.5rem;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-view-more:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    /* ── YOUTUBE ── */
+    .yt-bg {
+      background: var(--cream);
+      padding: 4rem 0;
+    }
+
+    .yt-main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .yt-embed {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .yt-embed iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: block;
+      border: none;
+    }
+
+    .yt-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .yt-extra {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    .yt-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      margin-top: 1.5rem;
+      color: var(--gray);
+      font-size: .9rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .yt-link:hover {
+      color: #FF0000;
+    }
+
+    @media(max-width:900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toppers-preview {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .yt-main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .yt-extra {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:560px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .toppers-preview {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-features {
+        grid-template-columns: 1fr;
+      }
+
+      .yt-extra {
+        grid-template-columns: 1fr;
+      }
+
+      .slider-arrow {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body data-page="home">
+
+  <!-- ── HERO SLIDER ── -->
+  <section class="hero" id="heroSlider">
+    <!-- Slides — images/slider/slide1-5.jpg add karo -->
+    <div class="slide active" id="slide-0">
+      <img class="slide-bg" src="images/slider/slider1.jpg" alt="School Building"/>
+    <div class="slide-fallback" style="background:linear-gradient(135deg,#0d2236 0%,#1a4a7a 50%,#0a1f3a 100%)"> </div>
+    </div>
+    <div class="slide" id="slide-1">
+      <img class="slide-bg" src="images/slider/slider2.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#1a3a00 0%,#2d5a1b 50%,#0d2a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-2">
+      <img class="slide-bg" src="images/slider/slider3.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#3a1000 0%,#7a2a0a 50%,#2a0a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-3">
+      <img class="slide-bg" src="images/slider/slider4.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#0a1a3a 0%,#1a2d6b 50%,#060d2a 100%)"></div>
+    </div>
+    <div class="slide" id="slide-4">
+      <img class="slide-bg" src="images/slider/slider5.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+     <div class="slide" id="slide-5">
+      <img class="slide-bg" src="images/slider/slider6.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+     <div class="slide" id="slide-6">
+      <img class="slide-bg" src="images/slider/slider7.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+     <div class="slide" id="slide-7">
+      <img class="slide-bg" src="images/slider/slider8.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-8">
+      <img class="slide-bg" src="images/slider/slider9.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-9">
+      <img class="slide-bg" src="images/slider/slider10.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-10">
+      <img class="slide-bg" src="images/slider/slider11.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-11">
+      <img class="slide-bg" src="images/slider/slider12.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+    <div class="slide" id="slide-12">
+      <img class="slide-bg" src="images/slider/slider13.jpg" alt="School Building"/>
+      <div class="slide-fallback" style="background:linear-gradient(135deg,#2a1500 0%,#6b3a0a 50%,#1a0a00 100%)"></div>
+    </div>
+
+
+    <!-- When photos added, replace fallback divs with:
+  <img class="slide-bg" src="images/slider/slide1.jpg" alt="School Building"/> -->
+
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge">⭐ 30+ Years of Excellence | Est. 1998</span>
+      <h1 class="hero-title">श्री शशि हाई स्कूल गोरसी</h1>
+      <p class="hero-title-en">Shri Shashi High School Gorsi</p>
+      <div class="hero-slogan">"आप हमें बच्चे दीजिये ! हम आपको कुशल नागरिक देंगे।"</div>
+      <p class="hero-tagline">सर्वांगीण विकास हमारी प्राथमिकता — हिंदी माध्यम | MP BOARD | <br> KG 1 से कक्षा 8वीं तक</p>
+      <div class="hero-btns">
+        <button class="btn-hero-primary" onclick="location.href='admission.html'">🎓 प्रवेश लें — Admission Now</button>
+        <button class="btn-hero-outline"
+          onclick="document.getElementById('aboutSection').scrollIntoView({behavior:'smooth'})">हमारे बारे में जानें
+          ↓</button>
+      </div>
+    </div>
+    <button class="slider-arrow arrow-left" onclick="changeSlide(-1)">&#8592;</button>
+    <button class="slider-arrow arrow-right" onclick="changeSlide(1)">&#8594;</button> 
+    <div class="slider-dots" id="sliderDots">
+      <button class="dot active" onclick="goToSlide(0)"></button>
+      <button class="dot" onclick="goToSlide(1)"></button>
+      <button class="dot" onclick="goToSlide(2)"></button>
+      <button class="dot" onclick="goToSlide(3)"></button>
+      <button class="dot" onclick="goToSlide(4)"></button>
+      <button class="dot" onclick="goToSlide(5)"></button>
+      <button class="dot" onclick="goToSlide(6)"></button>
+      <button class="dot" onclick="goToSlide(7)"></button>
+      <button class="dot" onclick="goToSlide(8)"></button>
+      <button class="dot" onclick="goToSlide(9)"></button>
+      <button class="dot" onclick="goToSlide(10)"></button>
+      <button class="dot" onclick="goToSlide(11)"></button>
+      <button class="dot" onclick="goToSlide(12)"></button>      
+    </div>
+  </section>
+
+  <!-- ── STATS ── -->
+  <div class="stats-bar">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Years of Excellence</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">20000+</div>
+        <div class="stat-label">Students Enrolled</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Dedicated Teachers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Navoday Selections</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NOTICES ── -->
+  <div class="notices-bg">
+    <div class="section">
+      <div class="sec-header">
+        <span class="sec-eyebrow">Latest Updates</span>
+        <h2 class="sec-title">सूचनाएँ एवं अपडेट</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="notices-grid">
+        <div class="notif-card highlight" onclick="location.href='result.html'">
+          <div class="nc-type">🏆 RESULT — MP Board</div>
+          <div class="nc-title">Anshika Rathour — <strong style="color:var(--saffron)">District Rank 1</strong> | Class
+            5th | 95% <span class="badge-new">NEW</span></div>
+          <div class="nc-date"><i class="far fa-calendar"></i> May 2026 &nbsp;|&nbsp; <span
+              style="color:var(--saffron);font-weight:600">Click to View Results →</span></div>
+        </div>
+        <div class="notif-card highlight" onclick="location.href='admission.html'">
+          <div class="nc-type">🎓 Admission</div>
+          <div class="nc-title">प्रवेश प्रारम्भ 2026-27 | Admission Open — Free Registration <span
+              class="badge-new">NEW</span></div>
+          <div class="nc-date"><i class="far fa-calendar"></i> June 2026 &nbsp;|&nbsp; <span
+              style="color:var(--saffron);font-weight:600">Apply Now →</span></div>
+        </div>
+        <div class="notif-card green">
+          <div class="nc-type" style="color:var(--green)">🌟 Achievement</div>
+          <div class="nc-title">Anshika Rathour — Navoday Entrance Exam Qualified! बधाई 🎉 <span
+              class="badge-new">NEW</span></div>
+          <div class="nc-date"><i class="far fa-calendar"></i> April 2026</div>
+        </div>
+        <div class="notif-card" onclick="location.href='result.html'">
+          <div class="nc-type">📋 MP Board Result</div>
+          <div class="nc-title">Class 8th Result 2025-26 Declared — Dharni Singh Rank 1 (88.17%) <span
+              class="badge-new">NEW</span></div>
+          <div class="nc-date"><i class="far fa-calendar"></i> May 2026 &nbsp;|&nbsp; <span
+              style="color:var(--saffron);font-weight:600;cursor:pointer">View →</span></div>
+        </div>
+        <div class="notif-card">
+          <div class="nc-type">📅 PTM</div>
+          <div class="nc-title">अभिभावक-शिक्षक मीटिंग — Parent Teacher Meeting Scheduled</div>
+          <div class="nc-date"><i class="far fa-calendar"></i> July 2026</div>
+        </div>
+        <div class="notif-card red">
+          <div class="nc-type" style="color:var(--red)">📝 Exam</div>
+          <div class="nc-title">Monthly Test Schedule — July 2026 जारी किया गया</div>
+          <div class="nc-date"><i class="far fa-calendar"></i> June 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section id="aboutSection">
+    <div class="section">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="sec-eyebrow">About Our School</span>
+          <h2 class="about-heading">श्री शशि हाई स्कूल गोरसी — ज्ञान, संस्कार और विकास का केंद्र</h2>
+          <p>सेमरवार रोड, ग्राम गोरसी, खण्ड जैतहरी, जिला अनूपपुर (म.प्र.) में स्थित श्री शशि हाई स्कूल गोरसी पिछले 30 से
+            अधिक वर्षों से बच्चों को गुणवत्तापूर्ण शिक्षा प्रदान कर रहा है।</p>
+          <p>हमारा विद्यालय MP Board से मान्यता प्राप्त हिंदी माध्यम विद्यालय है जिसमें KG 1 से कक्षा 8वीं तक की शिक्षा
+            प्रदान की जाती है।</p>
+          <div class="slogan-box">"आप हमें बच्चे दीजिये ! हम आपको कुशल नागरिक देंगे।"</div>
+          <div class="about-features">
+            <div class="feat-item">
+              <div class="feat-icon">📚</div>
+              <div class="feat-text">अनुभवी एवं प्रशिक्षित शिक्षक</div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">🏆</div>
+              <div class="feat-text">नवोदय, श्रमोदय तैयारी</div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">💻</div>
+              <div class="feat-text">Smart Education & Digital Awareness</div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">🚌</div>
+              <div class="feat-text">वाहन सुविधा उपलब्ध</div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">🏅</div>
+              <div class="feat-text">मासिक प्रतियोगी परीक्षाएँ</div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">🎭</div>
+              <div class="feat-text">सांस्कृतिक गतिविधियाँ</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-map">
+          <iframe
+            src="https://maps.google.com/maps?q=Shri+Shashi+High+School+Gorsi+Anuppur&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TOPPERS PREVIEW ── -->
+  <div class="toppers-bg">
+    <div class="section">
+      <div class="sec-header">
+        <span class="sec-eyebrow">Our Stars</span>
+        <h2 class="sec-title">हमारे मेधावी छात्र — Top Achievers</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="toppers-preview">
+        <div class="tp-card" onclick="location.href='toppers.html'">
+          <div style="font-size:1.8rem;margin-bottom:.5rem">🥇</div>
+          <div class="tp-avatar" style="background:linear-gradient(135deg,#C9972A,#F0BE5A)">
+            <img src="images/toppers/anshika-rathour.jpg" alt="Anshika" onerror="this.parentElement.innerHTML='A'" />
+          </div>
+          <div class="tp-name">Anshika Rathour</div>
+          <div class="tp-class">Class 5th | 2025-26</div>
+          <div class="tp-pct">95%</div>
+          <div class="dist-badge">🏆 District Rank 1</div>
+        </div>
+        <div class="tp-card" onclick="location.href='toppers.html'">
+          <div style="font-size:1.8rem;margin-bottom:.5rem">🥇</div>
+          <div class="tp-avatar" style="background:linear-gradient(135deg,#C9972A,#e6a030)">
+            <img src="images/toppers/anshu-singh.jpg" alt="Anshu" onerror="this.parentElement.innerHTML='A'" />
+          </div>
+          <div class="tp-name">Anshu Singh Rathour</div>
+          <div class="tp-class">Class 7th | 2025-26</div>
+          <div class="tp-pct">93.83%</div>
+          <div class="tp-rank">Rank 1</div>
+        </div>
+        <div class="tp-card" onclick="location.href='toppers.html'">
+          <div style="font-size:1.8rem;margin-bottom:.5rem">🥇</div>
+          <div class="tp-avatar" style="background:linear-gradient(135deg,#10B981,#34D399)">
+            <img src="images/toppers/dharni-singh.jpg" alt="Dharni" onerror="this.parentElement.innerHTML='D'" />
+          </div>
+          <div class="tp-name">Dharni Singh Rathour</div>
+          <div class="tp-class">Class 8th | 2025-26</div>
+          <div class="tp-pct">88.17%</div>
+          <div class="tp-rank">Rank 1</div>
+        </div>
+        <div class="tp-card" onclick="location.href='toppers.html'">
+          <div style="font-size:1.8rem;margin-bottom:.5rem">🌟</div>
+          <div class="tp-avatar" style="background:linear-gradient(135deg,#EC4899,#F472B6)">
+            <img src="images/toppers/sarjana-rathour.jpg" alt="Sarjana" onerror="this.parentElement.innerHTML='S'" />
+          </div>
+          <div class="tp-name">Sarjana Rathour</div>
+          <div class="tp-class">Class 5th | 2023-24</div>
+          <div class="tp-pct">92.25%</div>
+          <div class="dist-badge">🌟 Block Rank 3</div>
+        </div>
+      </div>
+      <div class="view-more">
+        <button class="btn-view-more" onclick="location.href='toppers.html'">View All Toppers →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── YOUTUBE ── -->
+  <div class="yt-bg">
+    <div class="section">
+      <div class="sec-header">
+        <span class="sec-eyebrow">School Videos</span>
+        <h2 class="sec-title">हमारे विद्यालय की झलकियाँ</h2>
+        <div class="sec-line"></div>
+      </div>
+      <div class="yt-main-grid">
+        <div class="yt-embed">
+          <iframe src="https://www.youtube.com/embed/I4tw0FCXAAY" title="Shri Shashi High School"
+            allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+        <div class="yt-side">
+          <div class="yt-embed"><iframe src="https://www.youtube.com/embed/mvSyinw-pYk" allowfullscreen></iframe></div>
+          <div class="yt-embed"><iframe src="https://www.youtube.com/embed/K1PYD6ZRDKw" allowfullscreen></iframe></div>
+        </div>
+      </div>
+      <div class="yt-extra">
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/gMYsOI9ZWAo" allowfullscreen></iframe></div>
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/3hTwkIHYNWA" allowfullscreen></iframe></div>
+        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/I4tw0FCXAAY" allowfullscreen></iframe></div>
+      </div>
+      <a href="https://www.youtube.com/@shrishashihighschoolgorsi" target="_blank" class="yt-link">
+        <i class="fab fa-youtube" style="color:#FF0000;font-size:1.2rem"></i>
+        <span>YouTube पर और वीडियो देखें — Watch More on YouTube</span>
+        <i class="fas fa-external-link-alt" style="font-size:.8rem"></i>
+      </a>
+    </div>
+  </div>
+
+  <script src="nav.js"></script>
+  <script>
+
+
+
+    // ── SLIDER ──
+    let currentSlide = 0;
+    const totalSlides = 13;
+    let sliderInterval;
+
+    // Add real images if available
+    const SLIDE_IMAGES = [
+      'images/slider/slide1.jpg',
+      'images/slider/slide2.jpg',
+      'images/slider/slide3.jpg',
+      'images/slider/slide4.jpg',
+      'images/slider/slide5.jpg',
+      'images/slider/slide6.jpg',
+      'images/slider/slide7.jpg',
+      'images/slider/slide8.jpg',
+      'images/slider/slide9.jpg',
+      'images/slider/slide10.jpg',
+      'images/slider/slide11.jpg',
+      'images/slider/slide12.jpg',
+      'images/slider/slide13.jpg',
+    ];
+
+    // Try to load real images
+    SLIDE_IMAGES.forEach((src, i) => {
+      const slide = document.getElementById(`slide-${i}`);
+      if (!slide) return;
+      const img = new Image();
+      img.onload = () => {
+        slide.innerHTML = `<img class="slide-bg" src="${src}" alt="School Photo ${i + 1}"/>`;
+      };
+      img.src = src;
+    });
+
+    function updateSlider() {
+      document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+    }
+    function changeSlide(dir) { currentSlide = (currentSlide + dir + totalSlides) % totalSlides; updateSlider(); resetInterval(); }
+    function goToSlide(n) { currentSlide = n; updateSlider(); resetInterval(); }
+    function resetInterval() { clearInterval(sliderInterval); sliderInterval = setInterval(() => changeSlide(1), 5000); }
+    sliderInterval = setInterval(() => changeSlide(1), 5000);
+  </script>
+</body>
+
+</html>

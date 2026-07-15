@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Results | श्री शशि हाई स्कूल गोरसी</title>
+  <link rel="stylesheet" href="shared.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .filter-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .fgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .fg {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+
+    .fl {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .fs {
+      border: 1.5px solid #E5E7EB;
+      border-radius: 9px;
+      padding: .65rem 1rem;
+      font-size: .88rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--navy);
+      background: var(--cream);
+      cursor: pointer;
+    }
+
+    .fs:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .btn-view {
+      background: linear-gradient(135deg, var(--navy), #1a4a7a);
+      color: #fff;
+      border: none;
+      padding: .75rem 2rem;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      width: 100%;
+      margin-top: 1rem;
+      transition: var(--transition);
+    }
+
+    .btn-view:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(11, 37, 69, 0.25);
+    }
+
+    /* RESULT AREA */
+    .result-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .rc-header {
+      background: var(--navy);
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .8rem;
+    }
+
+    .rc-header h3 {
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .rc-header p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: .8rem;
+      margin-top: .1rem;
+    }
+
+    .rc-badge {
+      background: var(--gold);
+      color: var(--navy);
+      padding: .2rem .8rem;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    /* PDF VIEWER — FIXED */
+    .pdf-container {
+      width: 100%;
+      background: #525659;
+      min-height: 500px;
+      position: relative;
+    }
+
+    .pdf-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      display: block;
+    }
+
+    .pdf-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      gap: 1rem;
+      font-size: .9rem;
+    }
+
+    .pdf-loading .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* NO PDF */
+    .no-pdf {
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .no-pdf .np-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .no-pdf h3 {
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: .5rem;
+    }
+
+    .no-pdf p {
+      font-size: .87rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .upload-hint {
+      background: var(--cream);
+      border: 1.5px dashed var(--gold);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: .8rem;
+      color: var(--gray);
+    }
+
+    /* PDF ACTIONS */
+    .pdf-actions {
+      padding: .8rem 1.2rem;
+      background: #f8f9fa;
+      border-top: 1px solid #E5E7EB;
+      display: flex;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--saffron);
+      color: #fff;
+      border: none;
+      padding: .5rem 1.2rem;
+      border-radius: 8px;
+      font-size: .83rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-download:hover {
+      background: #c45e10;
+    }
+
+    .btn-newTab {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: .5rem 1.2rem;
+      border-radius: 8px;
+      font-size: .83rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-newTab:hover {
+      background: #1a4a7a;
+    }
+
+    /* HOW TO */
+    .how-to {
+      background: #F0F9FF;
+      border: 1.5px solid #BAE6FD;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .how-to h4 {
+      color: var(--navy);
+      font-size: .9rem;
+      font-weight: 600;
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .how-to ol {
+      padding-left: 1.2rem;
+      color: var(--gray);
+      font-size: .82rem;
+      line-height: 1.9;
+    }
+
+    .how-to code {
+      background: #fff;
+      padding: .1rem .4rem;
+      border-radius: 4px;
+      font-size: .78rem;
+      color: var(--navy);
+      border: 1px solid #E5E7EB;
+    }
+
+    /* TOPPERS QUICK */
+    .quick-view {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.8rem;
+      margin-top: 2rem;
+    }
+
+    .qv-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--navy);
+      margin-bottom: 1.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+    }
+
+    th {
+      background: var(--navy);
+      color: rgba(255, 255, 255, 0.8);
+      padding: .7rem 1rem;
+      text-align: left;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+
+    td {
+      padding: .75rem 1rem;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: var(--cream);
+    }
+
+    .pct-bar {
+      height: 5px;
+      border-radius: 3px;
+      background: #E5E7EB;
+      margin-top: .3rem;
+    }
+
+    .pct-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--saffron));
+    }
+
+    .dist-badge {
+      background: #FEF3C7;
+      color: #92400E;
+      padding: .15rem .5rem;
+      border-radius: 4px;
+      font-size: .7rem;
+      font-weight: 600;
+    }
+
+    @media(max-width:600px) {
+      .fgrid {
+        grid-template-columns: 1fr;
+      }
+
+      .pdf-iframe {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+
+<body data-page="result">
+  <div class="page-header">
+    <span class="page-header-badge">📊 MP Board Results | परीक्षाफल</span>
+    <h1>Result Declaration</h1>
+    <p>वार्षिक परीक्षाफल — Annual Exam Results | Shri Shashi High School Gorsi</p>
+  </div>
+  <div class="main">
+    <div class="filter-card">
+      <h3><i class="fas fa-filter" style="color:var(--gold)"></i> परीक्षाफल देखें — View Results</h3>
+      <div class="fgrid">
+        <div class="fg">
+          <label class="fl">Session / सत्र</label>
+          <select class="fs" id="sessionSel">
+            <option value="">Select Session</option>
+            <option value="2025-26">Session 2025-26</option>
+            <option value="2024-25">Session 2024-25</option>
+            <option value="2023-24">Session 2023-24</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Class / कक्षा</label>
+          <select class="fs" id="classSel">
+            <option value="">Select Class</option>
+            <option value="5">Class 5th</option>
+            <option value="6">Class 6th</option>
+            <option value="7">Class 7th</option>
+            <option value="8">Class 8th</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-view" onclick="viewResult()"><i class="fas fa-search"></i> View Result</button>
+    </div>
+    <div id="resultArea" style="display:none"></div>
+    <div class="how-to">
+      <h4><i class="fas fa-info-circle" style="color:#0EA5E9"></i> PDF Results कैसे Add करें</h4>
+      <ol>
+        <li><code>results/</code> folder banao apni website folder mein</li>
+        <li>PDF file ko save karo: <code>results/5th-2025-26.pdf</code></li>
+        <li>Format: <code>results/[class]th-[session].pdf</code> e.g. <code>results/8th-2024-25.pdf</code></li>
+        <li>File upload hote hi website pe automatically show hoga</li>
+      </ol>
+    </div>
+    <div class="quick-view">
+      <div class="qv-title">🏆 Latest Toppers — Session 2025-26</div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Percentage</th>
+            <th>Special</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🥇</td>
+            <td><strong>Anshika Rathour</strong></td>
+            <td>Class 5th</td>
+            <td>95%<div class="pct-bar">
+                <div class="pct-fill" style="width:95%"></div>
+              </div>
+            </td>
+            <td><span class="dist-badge">🏆 District Rank 1</span></td>
+          </tr>
+          <tr>
+            <td>🥇</td>
+            <td><strong>Ganesh Singh</strong></td>
+            <td>Class 6th</td>
+            <td>91.83%<div class="pct-bar">
+                <div class="pct-fill" style="width:91.83%"></div>
+              </div>
+            </td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>🥇</td>
+            <td><strong>Anshu Singh Rathour</strong></td>
+            <td>Class 7th</td>
+            <td>93.83%<div class="pct-bar">
+                <div class="pct-fill" style="width:93.83%"></div>
+              </div>
+            </td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>🥇</td>
+            <td><strong>Dharni Singh Rathour</strong></td>
+            <td>Class 8th</td>
+            <td>88.17%<div class="pct-bar">
+                <div class="pct-fill" style="width:88.17%"></div>
+              </div>
+            </td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="text-align:center;margin-top:1.2rem">
+        <button onclick="location.href='toppers.html'"
+          style="background:none;border:1.5px solid var(--gold);color:var(--gold);padding:.5rem 1.8rem;border-radius:20px;font-size:.85rem;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500">View
+          All Toppers →</button>
+      </div>
+    </div>
+  </div>
+  <script src="nav.js"></script>
+  <script>
+    // PDF file mapping — results/ folder mein PDF rakhna
+    // Format: results/[class]th-[session].pdf
+    const PDF_MAP = {
+      "5-2025-26": "results/5th-2025-26.pdf",
+      "6-2025-26": "results/6th-2025-26.pdf",
+      "7-2025-26": "results/7th-2025-26.pdf",
+      "8-2025-26": "results/8th-2025-26.pdf",
+      "5-2024-25": "results/5th-2024-25.pdf",
+      "6-2024-25": "results/6th-2024-25.pdf",
+      "7-2024-25": "results/7th-2024-25.pdf",
+      "8-2024-25": "results/8th-2024-25.pdf",
+      "5-2023-24": "results/5th-2023-24.pdf",
+      "8-2023-24": "results/8th-2023-24.pdf",
+    };
+
+    function viewResult() {
+      const session = document.getElementById('sessionSel').value;
+      const cls = document.getElementById('classSel').value;
+      const area = document.getElementById('resultArea');
+      if (!session || !cls) { alert('कृपया Session और Class दोनों चुनें।'); return; }
+      area.style.display = 'block';
+      area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const key = `${cls}-${session}`;
+      const pdfPath = PDF_MAP[key];
+      area.innerHTML = `<div class="result-card">
+    <div class="rc-header">
+      <div><h3>📊 Class ${cls}th — Session ${session}</h3><p>Shri Shashi High School Gorsi | MP Board Result</p></div>
+      <span class="rc-badge">MP Board</span>
+    </div>
+    <div id="pdfContent">
+      <div class="pdf-container">
+        <div class="pdf-loading" id="pdfLoading"><div class="spinner"></div><span>Loading PDF...</span></div>
+        <iframe class="pdf-iframe" id="pdfFrame" src="" style="display:none" title="Result PDF"></iframe>
+      </div>
+    </div>
+  </div>`;
+
+      if (!pdfPath) { showNoPdf(cls, session); return; }
+
+      // FIXED: Check if PDF exists using fetch, then load in iframe
+      fetch(pdfPath, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            loadPdf(pdfPath, cls, session);
+          } else {
+            showNoPdf(cls, session);
+          }
+        })
+        .catch(() => {
+          // fetch failed (e.g. local file) — try loading iframe directly
+          loadPdf(pdfPath, cls, session);
+        });
+    }
+
+    function loadPdf(path, cls, session) {
+      const frame = document.getElementById('pdfFrame');
+      const loading = document.getElementById('pdfLoading');
+      if (!frame) return;
+      // Set iframe src — works for local files too
+      frame.src = path + '#toolbar=1&navpanes=1&scrollbar=1';
+      frame.style.display = 'block';
+      if (loading) loading.style.display = 'none';
+      frame.onerror = function () { showNoPdf(cls, session); };
+      // Add download + open buttons
+      const content = document.getElementById('pdfContent');
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'pdf-actions';
+      actionsDiv.innerHTML = `
+    <a class="btn-download" href="${path}" download="Class${cls}th-${session}.pdf"><i class="fas fa-download"></i> Download PDF</a>
+    <a class="btn-newTab" href="${path}" target="_blank"><i class="fas fa-external-link-alt"></i> Open in New Tab</a>`;
+      content.appendChild(actionsDiv);
+    }
+
+    function showNoPdf(cls, session) {
+      const loading = document.getElementById('pdfLoading');
+      if (loading) loading.style.display = 'none';
+      const frame = document.getElementById('pdfFrame');
+      if (frame) frame.style.display = 'none';
+      const key = `${cls}-${session}`;
+      const pdfPath = PDF_MAP[key] || `results/${cls}th-${session}.pdf`;
+      document.getElementById('pdfContent').innerHTML = `
+    <div class="no-pdf">
+      <div class="np-icon">📄</div>
+      <h3>PDF अभी उपलब्ध नहीं है</h3>
+      <p>Class ${cls}th Session ${session} का PDF result अभी upload नहीं किया गया है।</p>
+      <div class="upload-hint"><strong>Admin के लिए:</strong> PDF को <code>${pdfPath}</code> नाम से save करें।</div>
+      <div style="margin-top:1.5rem">
+        <button onclick="location.href='toppers.html'" style="background:var(--navy);color:#fff;border:none;padding:.7rem 2rem;border-radius:10px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600">Toppers List देखें →</button>
+      </div>
+    </div>`;
+    }
+  </script>
+</body>
+
+</html>

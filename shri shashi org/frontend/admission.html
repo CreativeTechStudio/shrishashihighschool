@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admission | श्री शशि हाई स्कूल गोरसी</title>
+  <link rel="stylesheet" href="shared.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .main{max-width:100%;margin:0;padding:2rem 3rem;}
+    .lang-toggle{display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem;background:#fff;border-radius:12px;padding:1rem 1.5rem;box-shadow:var(--shadow);}
+    .lang-toggle span{font-size:.85rem;font-weight:600;color:var(--navy);}
+    .lang-btn{padding:.4rem 1.2rem;border-radius:20px;border:1.5px solid #E5E7EB;background:#fff;font-size:.82rem;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;transition:var(--transition);}
+    .lang-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+    .info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:2rem;}
+    .info-card{background:#fff;border-radius:var(--radius);padding:1.2rem;box-shadow:var(--shadow);text-align:center;border-top:3px solid var(--gold);}
+    .ic-icon{font-size:1.7rem;margin-bottom:.4rem;}
+    .ic-title{font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:.2rem;}
+    .ic-val{font-size:.76rem;color:var(--gray);line-height:1.5;}
+    .ic-val b{color:var(--saffron);}
+    /* FORM */
+    .form-wrap{background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden;}
+    .form-top{background:linear-gradient(135deg,var(--navy),#1a4a7a);padding:1.8rem 2rem;}
+    .form-top h2{color:#fff;font-family:'Playfair Display',serif;font-size:1.4rem;}
+    .form-top p{color:rgba(255,255,255,0.6);font-size:.82rem;margin-top:.3rem;}
+    .form-body{padding:2rem 2.5rem;}
+    /* SECTION */
+    .fsec{margin-bottom:2.5rem;}
+    .fsec-title{font-size:.78rem;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;padding:.6rem 1rem;background:rgba(201,151,42,0.08);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem;}
+    /* GRID */
+    .fg2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+    .fg4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;}
+    .fg1{display:grid;grid-template-columns:1fr;gap:1rem;}
+    .fg-item{display:flex;flex-direction:column;gap:.3rem;}
+    .fg-item.full{grid-column:1/-1;}
+    .flabel{font-size:.76rem;font-weight:600;color:var(--navy);}
+    .flabel .hi{color:var(--gray);font-weight:400;font-size:.72rem;}
+    .req{color:var(--saffron);}
+    .finput,.fselect,.ftextarea{border:1.5px solid #E5E7EB;border-radius:9px;padding:.65rem 1rem;font-size:.87rem;font-family:'Poppins',sans-serif;color:var(--navy);background:var(--cream);transition:var(--transition);width:100%;}
+    .finput:focus,.fselect:focus,.ftextarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(201,151,42,0.1);}
+    .finput.err{border-color:var(--red);background:#FFF5F5;}
+    .ftextarea{resize:vertical;min-height:75px;}
+    .fhint{font-size:.69rem;color:var(--gray);margin-top:.2rem;}
+    .ferr{color:var(--red);font-size:.71rem;margin-top:.2rem;display:none;}
+    .radio-grp{display:flex;gap:1.2rem;flex-wrap:wrap;padding:.3rem 0;}
+    .radio-item{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.84rem;}
+    .radio-item input{accent-color:var(--gold);width:15px;height:15px;}
+    /* FILE UPLOAD */
+    .file-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+    .file-item{border:1.5px dashed #E5E7EB;border-radius:10px;padding:1rem;transition:var(--transition);}
+    .file-item:hover{border-color:var(--gold);background:rgba(201,151,42,0.03);}
+    .file-num{font-size:.68rem;font-weight:700;color:var(--saffron);margin-bottom:.25rem;}
+    .file-lbl{font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:.4rem;}
+    .file-lbl .hi{display:block;font-weight:400;color:var(--gray);font-size:.72rem;}
+    .file-input{width:100%;font-size:.76rem;font-family:'Poppins',sans-serif;color:var(--gray);cursor:pointer;}
+    .file-hint{font-size:.67rem;color:var(--gray);margin-top:.25rem;}
+    .btn-add-doc{background:none;border:1.5px dashed var(--gold);border-radius:9px;padding:.75rem;width:100%;font-size:.82rem;color:var(--gold);cursor:pointer;font-family:'Poppins',sans-serif;transition:var(--transition);display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.8rem;}
+    .btn-add-doc:hover{background:rgba(201,151,42,0.07);}
+    /* DECLARATION */
+    .decl-box{background:#F0F9FF;border:1.5px solid #BAE6FD;border-radius:10px;padding:1rem 1.2rem;margin:1.5rem 0;}
+    .decl-label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;font-size:.82rem;color:var(--navy);line-height:1.6;}
+    .decl-label input{margin-top:.15rem;accent-color:var(--navy);width:15px;height:15px;flex-shrink:0;}
+    /* NOTE */
+    .note-box{background:#FFF8E7;border:1px solid var(--gold);border-radius:9px;padding:.85rem 1.1rem;font-size:.8rem;color:#92400E;line-height:1.7;margin-bottom:1.2rem;}
+    /* SUBMIT */
+    .submit-row{display:flex;gap:1rem;justify-content:flex-end;flex-wrap:wrap;margin-top:2rem;padding-top:1.5rem;border-top:1.5px solid #E5E7EB;}
+    .btn-draft{background:none;border:1.5px solid var(--navy);color:var(--navy);padding:.75rem 1.8rem;border-radius:10px;font-size:.9rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:var(--transition);}
+    .btn-draft:hover{background:var(--navy);color:#fff;}
+    .btn-submit{background:linear-gradient(135deg,var(--saffron),#c45e10);color:#fff;border:none;padding:.85rem 2.5rem;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:var(--transition);}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(232,114,28,0.35);}
+    /* SUCCESS */
+    .success-wrap{display:none;text-align:center;padding:3rem 2rem;}
+    .success-wrap.show{display:block;}
+    .suc-icon{font-size:4rem;margin-bottom:1rem;}
+    .suc-wrap h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:.8rem;}
+    .suc-wrap p{color:var(--gray);font-size:.9rem;line-height:1.7;max-width:480px;margin:0 auto .5rem;}
+    .app-id-box{background:linear-gradient(135deg,#FFFBEB,#FFF3CC);border:2px solid var(--gold);border-radius:12px;padding:1rem 1.5rem;display:inline-block;margin:1rem 0;font-size:1.1rem;font-weight:700;color:var(--navy);}
+    .suc-btns{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;}
+
+    @media(max-width:900px){.main{padding:1.5rem;}.fg3,.fg4{grid-template-columns:1fr 1fr;}.file-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:600px){.main{padding:1rem;}.fg2,.fg3,.fg4{grid-template-columns:1fr;}.info-row{grid-template-columns:1fr;}.file-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body data-page="admission">
+<div class="page-header">
+  <span class="page-header-badge">🎓 Admission Open 2026-27 | प्रवेश प्रारम्भ</span>
+  <h1>Admission Form</h1>
+  <p>KG 1 से कक्षा 8वीं तक — हिंदी माध्यम | MP Board | निःशुल्क पंजीकरण</p>
+</div>
+
+<div class="main">
+  <!-- INFO CARDS -->
+  <div class="info-row">
+    <div class="info-card"><div class="ic-icon">🎓</div><div class="ic-title">Classes Available</div><div class="ic-val"><b>KG 1 to Class 8th</b><br/>Hindi Medium | MP Board</div></div>
+    <div class="info-card"><div class="ic-icon">✅</div><div class="ic-title">Registration / पंजीकरण</div><div class="ic-val"><b>निःशुल्क (Free)</b><br/>No registration fee</div></div>
+    <div class="info-card"><div class="ic-icon">📞</div><div class="ic-title">Contact / संपर्क</div><div class="ic-val"><b>9754345671</b><br/>8435545050</div></div>
+  </div>
+
+  <!-- LANG TOGGLE -->
+  <div class="lang-toggle">
+    <span>Form Language / भाषा:</span>
+    <button class="lang-btn active" id="btnHiEn" onclick="setLang('hien')">हिंदी + English</button>
+    <button class="lang-btn" id="btnEn" onclick="setLang('en')">English Only</button>
+    <button class="lang-btn" id="btnHi" onclick="setLang('hi')">हिंदी Only</button>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap">
+    <div class="form-top">
+      <h2>📋 नया प्रवेश आवेदन — New Admission Application</h2>
+      <p>सभी जानकारी ध्यानपूर्वक भरें। <span style="color:var(--saffron)">*</span> अनिवार्य है।</p>
+    </div>
+    <div class="form-body">
+
+      <!-- SUCCESS -->
+      <div class="success-wrap" id="successWrap">
+        <div class="suc-icon">🎉</div>
+        <h2>Application Submitted! / आवेदन सफल!</h2>
+        <p>आपका आवेदन सफलतापूर्वक प्राप्त हो गया है। Your application has been received.</p>
+        <div class="app-id-box" id="appIdBox">APP-2026-XXXX</div>
+        <p>हम आपसे <strong id="contactShow"></strong> पर संपर्क करेंगे।</p>
+        <div class="suc-btns">
+          <button onclick="location.href='index.html'" style="background:var(--navy);color:#fff;border:none;padding:.75rem 1.8rem;border-radius:10px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600">🏠 Home</button>
+          <button onclick="resetForm()" style="background:none;border:1.5px solid var(--gold);color:var(--gold);padding:.75rem 1.8rem;border-radius:10px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600">+ New Application</button>
+        </div>
+      </div>
+
+      <div id="formInner">
+
+        <!-- ── SECTION 1: STUDENT ── -->
+        <div class="fsec">
+          <div class="fsec-title">👤 <span class="lbl" data-en="Student Information" data-hi="छात्र की जानकारी" data-hien="Student Information / छात्र की जानकारी">Student Information / छात्र की जानकारी</span></div>
+          <div class="fg2" style="margin-bottom:1rem">
+            <div class="fg-item full">
+              <label class="flabel"><span class="lbl" data-en="Student Name (English)" data-hi="छात्र का नाम (हिंदी)" data-hien="Student Name (English) / छात्र का नाम">Student Name / छात्र का नाम</span> <span class="req">*</span></label>
+              <input class="finput" id="stuName" type="text" placeholder="Full name as per birth certificate / जन्म प्रमाणपत्र अनुसार"/>
+              <div class="ferr" id="err-stuName">⚠ Name required / नाम अनिवार्य है</div>
+            </div>
+          </div>
+          <div class="fg4">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Date of Birth" data-hi="जन्म तिथि" data-hien="Date of Birth / जन्म तिथि">Date of Birth / जन्म तिथि</span></label>
+              <input class="finput" id="dob" type="date"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Gender" data-hi="लिंग" data-hien="Gender / लिंग">Gender / लिंग</span></label>
+              <select class="fselect" id="gender">
+                <option value="">Select / चुनें</option>
+                <option>Male / पुरुष</option>
+                <option>Female / महिला</option>
+                <option>Other / अन्य</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Admission in Class" data-hi="प्रवेश कक्षा" data-hien="Admission Class / प्रवेश कक्षा">Admission Class / प्रवेश कक्षा</span> <span class="req">*</span></label>
+              <select class="fselect" id="admClass">
+                <option value="">Select / चुनें</option>
+                <option>KG 1</option><option>KG 2</option>
+                <option>Class 1 / कक्षा 1</option><option>Class 2 / कक्षा 2</option>
+                <option>Class 3 / कक्षा 3</option><option>Class 4 / कक्षा 4</option>
+                <option>Class 5 / कक्षा 5</option><option>Class 6 / कक्षा 6</option>
+                <option>Class 7 / कक्षा 7</option><option>Class 8 / कक्षा 8</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Blood Group" data-hi="रक्त समूह" data-hien="Blood Group / रक्त समूह">Blood Group / रक्त समूह</span></label>
+              <select class="fselect" id="blood">
+                <option value="">Select</option>
+                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Category" data-hi="श्रेणी" data-hien="Category / श्रेणी">Category / श्रेणी</span></label>
+              <select class="fselect" id="cat">
+                <option value="">Select</option>
+                <option>General / सामान्य</option><option>OBC</option>
+                <option>SC / अनुसूचित जाति</option><option>ST / अनुसूचित जनजाति</option><option>EWS</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Religion" data-hi="धर्म" data-hien="Religion / धर्म">Religion / धर्म</span></label>
+              <select class="fselect" id="rel">
+                <option value="">Select</option>
+                <option>Hindu / हिन्दू</option><option>Muslim / मुस्लिम</option>
+                <option>Christian / ईसाई</option><option>Sikh / सिख</option>
+                <option>Jain / जैन</option><option>Other / अन्य</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Nationality" data-hi="राष्ट्रीयता" data-hien="Nationality / राष्ट्रीयता">Nationality / राष्ट्रीयता</span></label>
+              <input class="finput" id="nat" type="text" value="Indian / भारतीय"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="APAAR ID" data-hi="APAAR आईडी" data-hien="APAAR ID">APAAR ID</span></label>
+              <input class="finput" id="apaar" type="text" placeholder="Optional / वैकल्पिक"/>
+            </div>
+          </div>
+          <div class="fg2" style="margin-top:1rem">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Caste Certificate Available?" data-hi="जाति प्रमाण पत्र उपलब्ध?" data-hien="Caste Certificate / जाति प्रमाण पत्र?">Caste Certificate / जाति प्रमाण पत्र?</span></label>
+              <div class="radio-grp">
+                <label class="radio-item"><input type="radio" name="casteCert" value="yes"/> Yes / हाँ</label>
+                <label class="radio-item"><input type="radio" name="casteCert" value="no" checked/> No / नहीं</label>
+              </div>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Student Photo" data-hi="छात्र फोटो" data-hien="Student Photo / छात्र फोटो">Student Photo / छात्र फोटो</span></label>
+              <input class="finput" type="file" accept="image/jpg,image/jpeg,image/png"/>
+              <div class="fhint">JPG/PNG | Max 500KB</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION 2: PARENT ── -->
+        <div class="fsec">
+          <div class="fsec-title">👨‍👩‍👧 <span class="lbl" data-en="Parent / Guardian Information" data-hi="माता-पिता / अभिभावक की जानकारी" data-hien="Parent / Guardian Info / माता-पिता की जानकारी">Parent / Guardian Info / माता-पिता की जानकारी</span></div>
+          <div class="fg2">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Father's Name" data-hi="पिता का नाम" data-hien="Father's Name / पिता का नाम">Father's Name / पिता का नाम</span></label>
+              <input class="finput" id="fatherName" type="text" placeholder="Father's full name / पिता का पूरा नाम"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Mother's Name" data-hi="माता का नाम" data-hien="Mother's Name / माता का नाम">Mother's Name / माता का नाम</span></label>
+              <input class="finput" id="motherName" type="text" placeholder="Mother's full name / माता का पूरा नाम"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Father's Occupation" data-hi="पिता का व्यवसाय" data-hien="Father's Occupation / पिता का व्यवसाय">Father's Occupation / पिता का व्यवसाय</span></label>
+              <select class="fselect" id="fOcc">
+                <option value="">Select / चुनें</option>
+                <option>Farmer / किसान</option><option>Government Employee / सरकारी कर्मचारी</option>
+                <option>Private Job / निजी नौकरी</option><option>Business / व्यापार</option>
+                <option>Labour / मजदूर</option><option>Other / अन्य</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Mother's Occupation" data-hi="माता का व्यवसाय" data-hien="Mother's Occupation / माता का व्यवसाय">Mother's Occupation / माता का व्यवसाय</span></label>
+              <select class="fselect" id="mOcc">
+                <option value="">Select / चुनें</option>
+                <option>Housewife / गृहिणी</option><option>Government Employee / सरकारी कर्मचारी</option>
+                <option>Private Job / निजी नौकरी</option><option>Other / अन्य</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Mobile Number" data-hi="मोबाइल नंबर" data-hien="Mobile Number / मोबाइल नंबर">Mobile Number / मोबाइल नंबर</span> <span class="req">*</span></label>
+              <input class="finput" id="mobile" type="tel" placeholder="+91 XXXXX XXXXX"/>
+              <div class="ferr" id="err-mobile">⚠ Valid mobile required / मोबाइल नंबर अनिवार्य</div>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Alternate Number" data-hi="वैकल्पिक नंबर" data-hien="Alternate Number / वैकल्पिक नंबर">Alternate Number / वैकल्पिक नंबर</span></label>
+              <input class="finput" id="altMob" type="tel" placeholder="Optional / वैकल्पिक"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Email Address" data-hi="ईमेल पता" data-hien="Email / ईमेल">Email / ईमेल</span></label>
+              <input class="finput" id="email" type="email" placeholder="parent@email.com (optional)"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Annual Family Income" data-hi="वार्षिक पारिवारिक आय" data-hien="Annual Income / वार्षिक आय">Annual Income / वार्षिक आय (₹)</span></label>
+              <input class="finput" id="income" type="number" placeholder="Annual income in ₹"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="BPL Card Holder?" data-hi="BPL कार्ड धारक?" data-hien="BPL Card / BPL कार्ड?">BPL Card / BPL कार्ड?</span></label>
+              <select class="fselect" id="bpl"><option value="">Select</option><option>Yes / हाँ</option><option>No / नहीं</option></select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Is Student Orphan?" data-hi="क्या छात्र अनाथ है?" data-hien="Orphan / अनाथ?">Orphan / अनाथ?</span></label>
+              <select class="fselect" id="orphan"><option value="">Select</option><option>Yes / हाँ</option><option>No / नहीं</option></select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Only Girl Child?" data-hi="एकमात्र पुत्री?" data-hien="Only Girl Child / एकमात्र पुत्री?">Only Girl Child / एकमात्र पुत्री?</span></label>
+              <select class="fselect" id="girlChild"><option value="">Select</option><option>Yes / हाँ</option><option>No / नहीं</option></select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Distance to School (km)" data-hi="घर से स्कूल दूरी (km)" data-hien="Distance / दूरी (km)">Distance / दूरी (km)</span></label>
+              <input class="finput" id="dist" type="number" placeholder="km"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION 3: ADDRESS ── -->
+        <div class="fsec">
+          <div class="fsec-title">🏠 <span class="lbl" data-en="Address Information" data-hi="पते की जानकारी" data-hien="Address / पते की जानकारी">Address / पते की जानकारी</span></div>
+          <div class="fg4">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="State" data-hi="राज्य" data-hien="State / राज्य">State / राज्य</span></label>
+              <select class="fselect" id="state">
+                <option selected>Madhya Pradesh / मध्यप्रदेश</option>
+                <option>Uttar Pradesh</option><option>Chhattisgarh</option><option>Other</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="District" data-hi="जिला" data-hien="District / जिला">District / जिला</span></label>
+              <input class="finput" id="district" type="text" value="Anuppur" placeholder="District name"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Block" data-hi="विकासखण्ड" data-hien="Block / विकासखण्ड">Block / विकासखण्ड</span></label>
+              <input class="finput" id="block" type="text" value="Jaithari" placeholder="Block name"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Village" data-hi="ग्राम" data-hien="Village / ग्राम">Village / ग्राम</span></label>
+              <input class="finput" id="village" type="text" placeholder="Village name / गाँव का नाम"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Habitation" data-hi="टोला-मजरा" data-hien="Habitation / टोला">Habitation / टोला</span></label>
+              <input class="finput" id="hab" type="text" placeholder="Habitation / टोला-मजरा"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="PIN Code" data-hi="पिन कोड" data-hien="PIN Code / पिन कोड">PIN Code / पिन कोड</span></label>
+              <input class="finput" id="pin" type="text" placeholder="6-digit PIN" maxlength="6"/>
+            </div>
+          </div>
+          <div class="fg1" style="margin-top:1rem">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Full Address" data-hi="पूरा पता" data-hien="Full Address / पूरा पता">Full Address / पूरा पता</span></label>
+              <textarea class="ftextarea" id="addr" placeholder="House No, Street, Area, Landmark / मकान नं, गली, मोहल्ला, लैंडमार्क..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION 4: ACADEMIC ── -->
+        <div class="fsec">
+          <div class="fsec-title">📚 <span class="lbl" data-en="Academic Information" data-hi="शैक्षणिक जानकारी" data-hien="Academic Info / शैक्षणिक जानकारी">Academic Info / शैक्षणिक जानकारी</span></div>
+          <div class="fg4">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Previous School" data-hi="पिछला विद्यालय" data-hien="Previous School / पिछला विद्यालय">Previous School / पिछला विद्यालय</span></label>
+              <input class="finput" id="prevSchool" type="text" placeholder="Previous school name"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Previous Class" data-hi="पिछली कक्षा" data-hien="Previous Class / पिछली कक्षा">Previous Class / पिछली कक्षा</span></label>
+              <select class="fselect" id="prevCls">
+                <option value="">Select</option>
+                <option>KG</option><option>1</option><option>2</option><option>3</option>
+                <option>4</option><option>5</option><option>6</option><option>7</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="UDISE Code" data-hi="UDISE कोड" data-hien="UDISE Code">UDISE Code</span></label>
+              <input class="finput" id="udise" type="text" placeholder="UDISE Code"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Last Year Result" data-hi="पिछले वर्ष का परिणाम" data-hien="Last Result / पिछला परिणाम">Last Result / पिछला परिणाम</span></label>
+              <select class="fselect" id="prevRes">
+                <option value="">Select</option>
+                <option>Pass / उत्तीर्ण</option><option>Fail / अनुत्तीर्ण</option><option>Promoted</option>
+              </select>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Last Year %" data-hi="पिछले वर्ष %" data-hien="Last Year % / पिछला %">Last Year % / पिछला %</span></label>
+              <input class="finput" id="prevPct" type="number" placeholder="e.g. 85.5" min="0" max="100" step="0.01"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Scholar Number" data-hi="छात्रवृत्ति नंबर" data-hien="Scholar No / छात्रवृत्ति नं">Scholar No / छात्रवृत्ति नं</span></label>
+              <input class="finput" id="scholar" type="text" placeholder="Scholar number"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Date of Admission" data-hi="प्रवेश तिथि" data-hien="Admission Date / प्रवेश तिथि">Admission Date / प्रवेश तिथि</span></label>
+              <input class="finput" id="admDate" type="date"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Hosteller?" data-hi="छात्रावास?" data-hien="Hosteller / छात्रावास?">Hosteller / छात्रावास?</span></label>
+              <select class="fselect" id="host"><option>No / नहीं</option><option>Yes / हाँ</option></select>
+            </div>
+          </div>
+          <div class="fg1" style="margin-top:1rem">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Special Requirements / Remarks" data-hi="विशेष आवश्यकता / टिप्पणी" data-hien="Remarks / टिप्पणी">Remarks / टिप्पणी</span></label>
+              <textarea class="ftextarea" id="remarks" placeholder="Medical conditions, special needs / चिकित्सीय स्थिति, विशेष आवश्यकता..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION 5: BANK ── -->
+        <div class="fsec">
+          <div class="fsec-title">🏦 <span class="lbl" data-en="Bank Account (For Scholarship)" data-hi="बैंक खाता (छात्रवृत्ति हेतु)" data-hien="Bank Account / बैंक खाता (Scholarship)">Bank Account / बैंक खाता (Scholarship)</span></div>
+          <div class="fg4">
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="IFSC Code" data-hi="IFSC कोड" data-hien="IFSC Code">IFSC Code</span></label>
+              <input class="finput" id="ifsc" type="text" placeholder="e.g. SBIN0001234" style="text-transform:uppercase"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Bank Name" data-hi="बैंक का नाम" data-hien="Bank Name / बैंक का नाम">Bank Name / बैंक का नाम</span></label>
+              <input class="finput" id="bank" type="text" placeholder="Bank name"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Branch Name" data-hi="शाखा का नाम" data-hien="Branch / शाखा">Branch / शाखा</span></label>
+              <input class="finput" id="branch" type="text" placeholder="Branch name"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Account Number" data-hi="खाता नंबर" data-hien="Account No / खाता नं">Account No / खाता नं</span></label>
+              <input class="finput" id="accNo" type="text" placeholder="Account number"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Confirm Account No" data-hi="खाता नंबर पुनः" data-hien="Confirm Account / खाता नं पुनः">Confirm Account / खाता नं पुनः</span></label>
+              <input class="finput" id="accNo2" type="text" placeholder="Re-enter account number"/>
+            </div>
+            <div class="fg-item">
+              <label class="flabel"><span class="lbl" data-en="Account Holder Name" data-hi="खाताधारक का नाम" data-hien="Account Holder / खाताधारक">Account Holder / खाताधारक</span></label>
+              <input class="finput" id="accName" type="text" placeholder="As per bank records"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SECTION 6: DOCUMENTS ── -->
+        <div class="fsec">
+          <div class="fsec-title">📎 <span class="lbl" data-en="Document Upload" data-hi="दस्तावेज़ अपलोड" data-hien="Documents / दस्तावेज़">Documents / दस्तावेज़</span></div>
+          <div class="note-box">
+            📌 <strong>Note:</strong> केवल PDF या JPG file upload करें। File size 500KB से कम होनी चाहिए।<br/>
+            Only PDF or JPG files. Max size 500KB each.
+          </div>
+          <div class="file-grid" id="fileGrid">
+            <div class="file-item">
+              <div class="file-num">Document 1</div>
+              <div class="file-lbl">Caste Certificate / जाति प्रमाण पत्र<span class="hi">(OBC / ST / SC)</span></div>
+              <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg"/>
+              <div class="file-hint">PDF or JPG | Max 500KB</div>
+            </div>
+            <div class="file-item">
+              <div class="file-num">Document 2</div>
+              <div class="file-lbl">Handicapped Certificate / विकलांग प्रमाण पत्र<span class="hi">(If applicable / यदि लागू हो)</span></div>
+              <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg"/>
+              <div class="file-hint">PDF or JPG | Max 500KB</div>
+            </div>
+            <div class="file-item">
+              <div class="file-num">Document 3</div>
+              <div class="file-lbl">Bank Passbook / बैंक पासबुक</div>
+              <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg"/>
+              <div class="file-hint">PDF or JPG | Max 500KB</div>
+            </div>
+            <div class="file-item">
+              <div class="file-num">Document 4</div>
+              <div class="file-lbl">Income Proof / आय प्रमाण</div>
+              <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg"/>
+              <div class="file-hint">PDF or JPG | Max 500KB</div>
+            </div>
+            <div class="file-item">
+              <div class="file-num">Document 5</div>
+              <div class="file-lbl">Birth Certificate / जन्म प्रमाण पत्र</div>
+              <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg"/>
+              <div class="file-hint">PDF or JPG | Max 500KB</div>
+            </div>
+            <div class="file-item">
+              <div class="file-num">Document 6</div>
+              <div class="file-lbl">Transfer Certificate / स्थानांतरण प्रमाण पत्र<span class="hi">(TC — if applicable)</span></div>
+              <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg"/>
+              <div class="file-hint">PDF or JPG | Max 500KB</div>
+            </div>
+          </div>
+          <div id="extraDocsGrid"></div>
+          <button class="btn-add-doc" onclick="addDoc()" type="button">
+            <i class="fas fa-plus-circle"></i> <span class="lbl" data-en="Add Another Document" data-hi="और दस्तावेज़ जोड़ें" data-hien="Add Another Document / और दस्तावेज़ जोड़ें">Add Another Document / और दस्तावेज़ जोड़ें</span>
+          </button>
+        </div>
+
+        <!-- DECLARATION -->
+        <div class="decl-box">
+          <label class="decl-label">
+            <input type="checkbox" id="decl"/>
+            <span>मैं घोषणा करता/करती हूँ कि ऊपर दी गई सभी जानकारी सत्य और सही है। I declare that all information provided above is true and correct to the best of my knowledge. <span class="req">*</span></span>
+          </label>
+          <div class="ferr" id="err-decl">⚠ Please accept declaration / घोषणा स्वीकार करें</div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="submit-row">
+          <button class="btn-draft" type="button" onclick="draftSave()">💾 <span class="lbl" data-en="Draft Save" data-hi="ड्राफ्ट सेव" data-hien="Draft Save">Draft Save</span></button>
+          <button class="btn-submit" type="button" onclick="submitForm()">🎓 <span class="lbl" data-en="Submit Application" data-hi="आवेदन जमा करें" data-hien="Submit Application / आवेदन जमा करें">Submit Application / आवेदन जमा करें</span></button>
+        </div>
+
+      </div><!-- /formInner -->
+    </div>
+  </div>
+</div>
+
+<script src="nav.js"></script>
+<script>
+// LANGUAGE TOGGLE
+let currentLang='hien';
+function setLang(lang){
+  currentLang=lang;
+  ['btnHiEn','btnEn','btnHi'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(lang==='hien'?'btnHiEn':lang==='en'?'btnEn':'btnHi').classList.add('active');
+  document.querySelectorAll('.lbl').forEach(el=>{
+    el.textContent=el.getAttribute(`data-${lang}`)||el.getAttribute('data-hien');
+  });
+}
+
+// IFSC uppercase
+document.getElementById('ifsc').addEventListener('input',function(){this.value=this.value.toUpperCase();});
+
+// ADD DOCUMENT
+let extraDocCount=6;
+function addDoc(){
+  extraDocCount++;
+  const grid=document.getElementById('extraDocsGrid');
+  if(!grid.children.length){
+    const wrapper=document.createElement('div');
+    wrapper.className='file-grid';
+    wrapper.style.marginTop='.8rem';
+    wrapper.id='extraDocWrapper';
+    grid.appendChild(wrapper);
+  }
+  const wrapper=document.getElementById('extraDocWrapper');
+  const div=document.createElement('div');
+  div.className='file-item';
+  div.innerHTML=`<div class="file-num">Document ${extraDocCount}</div>
+    <div class="file-lbl">Additional Document / अतिरिक्त दस्तावेज़</div>
+    <input class="file-input" type="file" accept=".pdf,.jpg,.jpeg,.png"/>
+    <div class="file-hint">PDF, JPG or PNG | Max 500KB</div>`;
+  wrapper.appendChild(div);
+}
+
+// VALIDATE
+function validate(){
+  let ok=true;
+  document.querySelectorAll('.ferr').forEach(e=>e.style.display='none');
+  document.querySelectorAll('.finput.err').forEach(e=>e.classList.remove('err'));
+  const name=document.getElementById('stuName').value.trim();
+  if(!name){
+    document.getElementById('err-stuName').style.display='block';
+    document.getElementById('stuName').classList.add('err');
+    document.getElementById('stuName').scrollIntoView({behavior:'smooth',block:'center'});
+    ok=false;
+  }
+  const mob=document.getElementById('mobile').value.trim().replace(/\D/g,'');
+  if(!mob||mob.length<10){
+    document.getElementById('err-mobile').style.display='block';
+    document.getElementById('mobile').classList.add('err');
+    if(ok)document.getElementById('mobile').scrollIntoView({behavior:'smooth',block:'center'});
+    ok=false;
+  }
+  if(!document.getElementById('decl').checked){
+    document.getElementById('err-decl').style.display='block';
+    if(ok)document.getElementById('decl').scrollIntoView({behavior:'smooth',block:'center'});
+    ok=false;
+  }
+  return ok;
+}
+
+function submitForm(){
+  if(!validate())return;
+  const name=document.getElementById('stuName').value.trim();
+  const mobile=document.getElementById('mobile').value.trim();
+  const appId='APP-2026-'+Math.floor(Math.random()*9000+1000);
+  document.getElementById('appIdBox').textContent=appId;
+  document.getElementById('contactShow').textContent=mobile;
+  document.getElementById('formInner').style.display='none';
+  document.getElementById('successWrap').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function draftSave(){
+  alert('✅ Draft saved! आपका डेटा अस्थायी रूप से सुरक्षित है।\nFinal submit करना न भूलें।');
+}
+
+function resetForm(){
+  document.getElementById('formInner').style.display='block';
+  document.getElementById('successWrap').classList.remove('show');
+  document.querySelectorAll('input:not([type=radio]):not([type=checkbox]):not([type=file])').forEach(i=>i.value=i.defaultValue||'');
+  document.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+  document.querySelectorAll('textarea').forEach(t=>t.value='');
+  document.getElementById('decl').checked=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

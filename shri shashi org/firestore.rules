@@ -1,0 +1,84 @@
+// ════════════════════════════════════════════════════════
+// FILE: firestore.rules
+// Firebase Console > Firestore > Rules mein paste karo
+// ════════════════════════════════════════════════════════
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── HELPER FUNCTIONS ──
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function isLoggedIn() {
+      return request.auth != null;
+    }
+
+    // ── ADMINS ── Only admins can read/write
+    match /admins/{uid} {
+      allow read, write: if isAdmin();
+    }
+
+    // ── ADMISSIONS ── Anyone can create, only admin can read/update/delete
+    match /admissions/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ── STUDENTS ── Admin can manage, student can read own
+    match /students/{uid} {
+      allow read: if isLoggedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // ── STUDENT USERS ── Admin creates, student reads own
+    match /studentUsers/{uid} {
+      allow read: if isLoggedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // ── TOPPERS ── Public read, admin write
+    match /toppers/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── NOTICES ── Public read, admin write
+    match /notices/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── RESULTS ── Public read, admin write
+    match /results/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── TEACHERS ── Public read, admin write
+    match /teachers/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── ACHIEVEMENTS ── Public read, admin write
+    match /achievements/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── GALLERY ── Public read, admin write
+    match /gallery/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── SETTINGS ── Public read, admin write
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

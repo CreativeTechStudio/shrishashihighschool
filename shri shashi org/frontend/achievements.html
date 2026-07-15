@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Achievements | श्री शशि हाई स्कूल गोरसी</title>
+  <link rel="stylesheet" href="shared.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .main{max-width:1100px;margin:0 auto;padding:3rem 1.5rem;}
+    .stats-bar{background:var(--navy);padding:1.8rem 2rem;}
+    .stats-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+    .stat-item{text-align:center;padding:.5rem;border-right:1px solid rgba(255,255,255,0.1);}
+    .stat-item:last-child{border-right:none;}
+    .stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold2);}
+    .stat-label{font-size:.78rem;color:rgba(255,255,255,0.6);margin-top:.2rem;}
+    .sec-hdr{margin-bottom:2rem;}
+    .sec-eyebrow{display:inline-block;color:var(--saffron);font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;}
+    .sec-title-sm{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:.4rem;}
+    .sec-ln{width:50px;height:3px;background:linear-gradient(90deg,var(--gold),var(--saffron));border-radius:2px;}
+    .milestone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem;}
+    .milestone-card{background:linear-gradient(135deg,var(--navy),#1a4a7a);border-radius:var(--radius);padding:2rem;text-align:center;color:#fff;}
+    .m-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--gold2);line-height:1;}
+    .m-label{font-size:.9rem;color:rgba(255,255,255,0.7);margin-top:.5rem;}
+    .m-sub{font-size:.75rem;color:rgba(255,255,255,0.4);margin-top:.3rem;}
+
+    /* ACHIEVEMENT CARDS — same hover as toppers */
+    .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;}
+    .ach-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:visible;transition:var(--transition);position:relative;cursor:default;}
+    .ach-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(11,37,69,0.18);}
+
+    /* HOVER OVERLAY — same style as toppers */
+    .ach-overlay{
+      position:absolute;bottom:calc(100% + 12px);left:50%;
+      transform:translateX(-50%) translateY(6px);
+      background:linear-gradient(135deg,rgba(11,37,69,0.97),rgba(19,57,94,0.97));
+      color:#fff;border-radius:12px;padding:1.2rem;
+      min-width:230px;max-width:260px;
+      box-shadow:0 8px 30px rgba(11,37,69,0.3);
+      opacity:0;pointer-events:none;
+      transition:opacity .25s ease,transform .25s ease;
+      z-index:200;text-align:center;
+    }
+    .ach-card:hover .ach-overlay{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+    .ach-overlay::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:rgba(11,37,69,0.97);}
+    .ov-name{color:var(--gold2);font-size:.92rem;font-weight:700;margin-bottom:.5rem;}
+    .ov-type{background:var(--saffron);color:#fff;padding:.2rem .7rem;border-radius:20px;font-size:.7rem;font-weight:700;margin-bottom:.6rem;display:inline-block;}
+    .ov-detail{color:rgba(255,255,255,0.75);font-size:.78rem;line-height:1.7;}
+    .ov-year{color:rgba(255,255,255,0.45);font-size:.72rem;margin-top:.5rem;}
+
+    /* CARD FRONT */
+    .ach-front{padding:1.5rem 1.2rem;text-align:center;}
+    .ach-photo{width:80px;height:80px;border-radius:14px;margin:0 auto .8rem;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:#fff;font-family:'Playfair Display',serif;border:3px solid rgba(0,0,0,0.06);}
+    .ach-photo img{width:100%;height:100%;object-fit:cover;}
+    .ach-year-badge{position:absolute;top:.7rem;right:.7rem;background:var(--gold);color:var(--navy);padding:.15rem .55rem;border-radius:20px;font-size:.66rem;font-weight:700;}
+    .ach-name{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.3rem;line-height:1.3;}
+    .ach-type-tag{padding:.2rem .7rem;border-radius:20px;font-size:.7rem;font-weight:600;display:inline-block;margin-bottom:.4rem;}
+    .type-navoday{background:#EFF6FF;color:#1D4ED8;}
+    .type-shramoday{background:#F0FFF4;color:#15803D;}
+    .type-sainik{background:#FFF7ED;color:#C2410C;}
+    .type-competitive{background:#FDF4FF;color:#7E22CE;}
+    .ach-detail{font-size:.73rem;color:var(--gray);}
+
+    /* INFO BOX */
+    .info-box{background:linear-gradient(135deg,#F0F9FF,#E0F2FE);border:1.5px solid #BAE6FD;border-radius:var(--radius);padding:2rem;margin-top:3rem;text-align:center;}
+    .type-tags{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;}
+    .type-tag{padding:.35rem .9rem;border-radius:20px;font-size:.78rem;font-weight:600;}
+
+    @media(max-width:700px){.stats-grid{grid-template-columns:repeat(2,1fr);}.milestone-grid{grid-template-columns:1fr 1fr;}.ach-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:400px){.milestone-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body data-page="achievements">
+<div class="page-header">
+  <span class="page-header-badge">🎖️ Our Pride | हमारे गौरव</span>
+  <h1>Achievements</h1>
+  <p>हमारे प्रतिभाशाली छात्रों की उपलब्धियाँ — Navoday, Shramoday & Competitive Exams</p>
+</div>
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-num">40+</div><div class="stat-label">Navoday Selections</div></div>
+    <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Competitive Exam Pass</div></div>
+    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Years of Data</div></div>
+    <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Years of Excellence</div></div>
+  </div>
+</div>
+<div class="main">
+  <div class="milestone-grid">
+    <div class="milestone-card fade-up"><div class="m-num">40+</div><div class="m-label">नवोदय विद्यालय में चयन</div><div class="m-sub">Navoday Vidyalaya Selections</div></div>
+    <div class="milestone-card fade-up" style="animation-delay:.1s"><div class="m-num">100+</div><div class="m-label">प्रतियोगी परीक्षाओं में सफलता</div><div class="m-sub">Competitive Exams Passed</div></div>
+    <div class="milestone-card fade-up" style="animation-delay:.2s"><div class="m-num">🏆</div><div class="m-label">Anshika Rathour</div><div class="m-sub">District Rank 1 — Class 5th 2025-26</div></div>
+  </div>
+  <div class="sec-hdr">
+    <span class="sec-eyebrow">🎓 Student Achievements</span>
+    <h2 class="sec-title-sm">उपलब्धियाँ — Achievements</h2>
+    <div class="sec-ln"></div>
+  </div>
+  <div class="ach-grid" id="achGrid"></div>
+  <div class="info-box">
+    <div style="font-size:2.5rem;margin-bottom:.8rem">🏅</div>
+    <h3 style="font-size:1.2rem;color:var(--navy);margin-bottom:.5rem">100+ Students — Competitive Exams</h3>
+    <p style="color:var(--gray);font-size:.88rem;max-width:560px;margin:0 auto;line-height:1.7">पिछले 5 वर्षों में हमारे 100 से अधिक छात्रों ने विभिन्न प्रतियोगी परीक्षाओं में सफलता प्राप्त की है।</p>
+    <div class="type-tags">
+      <span class="type-tag type-navoday">🏫 Navoday Vidyalaya</span>
+      <span class="type-tag type-shramoday">🌟 Shramoday Vidyalaya</span>
+      <span class="type-tag type-sainik">⚔️ Sainik School</span>
+      <span class="type-tag type-competitive">📝 Other Exams</span>
+    </div>
+  </div>
+</div>
+<script src="nav.js"></script>
+<script>
+const ACHIEVEMENTS=[
+  {name:"Anshika Rathour",year:"2025-26",type:"navoday",detail:"Navoday Entrance Exam Qualified\nReg No: 12460300724\nTotal Score: 76.25 | Rank: 110",photo:null,color:"#C9972A"},
+  {name:"Sushmita Rathour",year:"2024-25",type:"navoday",detail:"Selected in Navoday Vidyalaya",photo:null,color:"#3B82F6"},
+  {name:"Aditi Singh Rathour",year:"2024-25",type:"navoday",detail:"Selected in Navoday Vidyalaya",photo:null,color:"#10B981"},
+  {name:"Sarjana Rathour",year:"2023-24",type:"navoday",detail:"Block Rank 3 — Class 5th\nSelected in Navoday",photo:null,color:"#8B5CF6"},
+  {name:"Sara Rathour",year:"2024-25",type:"navoday",detail:"Class 8th Rank 1\nSelected in Navoday",photo:null,color:"#EC4899"},
+  {name:"Chandni Prajapati",year:"2023-24",type:"navoday",detail:"Class 8th Rank 1\nCompetitive Exam Qualified",photo:null,color:"#F59E0B"},
+  {name:"Dharni Singh Rathour",year:"2025-26",type:"shramoday",detail:"Class 8th Rank 1 (88.17%)\nSelected in Shramoday",photo:null,color:"#14B8A6"},
+  {name:"Ankita Singh Rathour",year:"2025-26",type:"shramoday",detail:"Class 8th Rank 2 (87.83%)",photo:null,color:"#6366F1"},
+  {name:"Jyoti Napit",year:"2023-24",type:"competitive",detail:"Multiple Competitive Exams Passed",photo:null,color:"#EF4444"},
+  {name:"Prem Kumar Soni",year:"2023-24",type:"competitive",detail:"Competitive Exam Qualified",photo:null,color:"#84CC16"},
+  {name:"Kapil Kumar Rathour",year:"2025-26",type:"navoday",detail:"Class 5th Rank 4 (90.25%)",photo:null,color:"#F97316"},
+  {name:"Samar Singh Rathour",year:"2025-26",type:"competitive",detail:"Class 5th Rank 5 (90%)\nCompetitive Exam Passed",photo:null,color:"#A855F7"},
+];
+const TYPE_LABELS={
+  navoday:{label:"Navoday Vidyalaya",cls:"type-navoday",icon:"🏫"},
+  shramoday:{label:"Shramoday Vidyalaya",cls:"type-shramoday",icon:"🌟"},
+  sainik:{label:"Sainik School",cls:"type-sainik",icon:"⚔️"},
+  competitive:{label:"Competitive Exam",cls:"type-competitive",icon:"📝"},
+};
+function getInitials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+function render(){
+  document.getElementById('achGrid').innerHTML=ACHIEVEMENTS.map((a,i)=>{
+    const t=TYPE_LABELS[a.type];
+    const ini=getInitials(a.name);
+    const avatarUrl=`https://ui-avatars.com/api/?name=${encodeURIComponent(a.name)}&background=${a.color.replace('#','')}&color=fff&size=80&bold=true`;
+    const detailLines=a.detail.split('\n').join('<br/>');
+    return `<div class="ach-card fade-up" style="animation-delay:${i*0.05}s">
+      <div class="ach-overlay">
+        <div class="ov-name">${a.name}</div>
+        <span class="ov-type">${t.icon} ${t.label}</span>
+        <div class="ov-detail">${detailLines}</div>
+        <div class="ov-year">Year: ${a.year}</div>
+      </div>
+      <div class="ach-front">
+        <span class="ach-year-badge">${a.year}</span>
+        <div class="ach-photo" style="background:${a.color}">
+          ${a.photo?`<img src="${a.photo}" alt="${a.name}" onerror="this.src='${avatarUrl}'"/>`:`<img src="${avatarUrl}" alt="${a.name}"/>`}
+        </div>
+        <div class="ach-name">${a.name}</div>
+        <span class="ach-type-tag ${t.cls}">${t.icon} ${t.label}</span>
+        <div class="ach-detail">${a.year}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>

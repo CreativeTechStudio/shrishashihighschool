@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brain Booster — KBC Quiz | Shri Shashi High School Gorsi</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --stage-deep: #04061a;
+      --stage-navy: #0a0f3d;
+      --stage-navy2: #141d5e;
+      --stage-purple: #2a1257;
+      --gold: #f2b705;
+      --gold-bright: #ffd84d;
+      --gold-dim: #7a5d12;
+      --diamond-blue: #0e3a7a;
+      --diamond-blue-light: #1f5fc4;
+      --correct-green: #16a34a;
+      --wrong-red: #dc2626;
+      --text-light: #f3f0e8;
+      --text-dim: #a8aed4;
+      --shadow-gold: 0 0 24px rgba(242, 183, 5, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% -10%, var(--stage-purple) 0%, transparent 55%),
+        radial-gradient(ellipse 100% 60% at 50% 110%, #1a0f3d 0%, transparent 60%),
+        linear-gradient(180deg, var(--stage-deep) 0%, var(--stage-navy) 45%, var(--stage-navy2) 100%);
+      color: var(--text-light);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ambient spotlight beams */
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      top: -10%;
+      width: 45vw;
+      height: 140vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(242, 183, 5, 0.06), transparent 70%);
+      filter: blur(40px);
+    }
+
+    body::before {
+      left: -10%;
+      transform: rotate(8deg);
+    }
+
+    body::after {
+      right: -10%;
+      transform: rotate(-8deg);
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══════════ WELCOME SCREEN ═══════════ */
+    #welcomeScreen {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .welcome-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold-dim));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--stage-deep);
+      margin: 0 auto 1.2rem;
+      box-shadow: var(--shadow-gold);
+      animation: logoFloat 3.5s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    .welcome-eyebrow {
+      color: var(--gold-bright);
+      font-size: .85rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: .6rem;
+    }
+
+    .welcome-title {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      background: linear-gradient(135deg, #fff, var(--gold-bright) 60%, var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.25;
+      margin-bottom: .4rem;
+      text-shadow: 0 0 40px rgba(242, 183, 5, 0.15);
+    }
+
+    .welcome-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--text-dim);
+      margin-bottom: 2.2rem;
+    }
+
+    .welcome-school {
+      font-size: .82rem;
+      color: var(--text-dim);
+      letter-spacing: .05em;
+      margin-bottom: 2.4rem;
+    }
+
+    .welcome-school strong {
+      color: var(--gold-bright);
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      color: var(--stage-deep);
+      border: none;
+      padding: 1.05rem 3rem;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 8px 30px rgba(242, 183, 5, 0.4);
+      transition: all .25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-start::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-120%);
+      transition: transform .6s;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 14px 40px rgba(242, 183, 5, 0.55);
+    }
+
+    .btn-start:hover::after {
+      transform: translateX(120%);
+    }
+
+    .welcome-rules {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 760px;
+      width: 100%;
+    }
+
+    .rule-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(242, 183, 5, 0.25);
+      border-radius: 14px;
+      padding: 1rem .8rem;
+      backdrop-filter: blur(6px);
+      transition: all .25s;
+    }
+
+    .rule-chip:hover {
+      background: rgba(242, 183, 5, 0.1);
+      transform: translateY(-3px);
+      border-color: var(--gold-bright);
+    }
+
+    .rule-chip i {
+      color: var(--gold-bright);
+      font-size: 1.3rem;
+      margin-bottom: .5rem;
+      display: block;
+    }
+
+    .rule-chip span {
+      font-size: .75rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+      display: block;
+    }
+
+    /* ═══════════ SETUP SCREEN ═══════════ */
+    #setupScreen {
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .setup-card {
+      background: rgba(10, 15, 61, 0.75);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(242, 183, 5, 0.3);
+      border-radius: 24px;
+      padding: 2.6rem 2.4rem;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .setup-title {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: 1.6rem;
+      text-align: center;
+      margin-bottom: .3rem;
+      color: var(--gold-bright);
+    }
+
+    .setup-sub {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: .85rem;
+      margin-bottom: 2rem;
+    }
+
+    .setup-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: .6rem;
+      display: block;
+      letter-spacing: .03em;
+    }
+
+    .setup-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(242, 183, 5, 0.25);
+      border-radius: 12px;
+      padding: .9rem 1.1rem;
+      color: var(--text-light);
+      font-size: .95rem;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: .3rem;
+      transition: all .2s;
+    }
+
+    .setup-input:focus {
+      outline: none;
+      border-color: var(--gold-bright);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(242, 183, 5, 0.12);
+    }
+
+    .setup-input::placeholder {
+      color: rgba(243, 240, 232, 0.35);
+    }
+
+    .field-error {
+      color: #ff8a8a;
+      font-size: .74rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .7rem;
+      margin: .5rem 0 1rem;
+    }
+
+    .class-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(242, 183, 5, 0.25);
+      border-radius: 12px;
+      padding: .85rem .5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s;
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--text-light);
+    }
+
+    .class-pill:hover {
+      border-color: var(--gold-bright);
+      background: rgba(242, 183, 5, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .class-pill.active {
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      color: var(--stage-deep);
+      border-color: var(--gold-bright);
+      box-shadow: 0 6px 20px rgba(242, 183, 5, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-play {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      color: var(--stage-deep);
+      border: none;
+      padding: 1rem;
+      border-radius: 14px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 1.3rem;
+      transition: all .25s;
+      box-shadow: 0 8px 25px rgba(242, 183, 5, 0.35);
+    }
+
+    .btn-play:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(242, 183, 5, 0.5);
+    }
+
+    .setup-back {
+      display: block;
+      text-align: center;
+      margin-top: 1.2rem;
+      color: var(--text-dim);
+      font-size: .82rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .setup-back:hover {
+      color: var(--gold-bright);
+    }
+
+    /* ═══════════ GAME SCREEN ═══════════ */
+    #gameScreen {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .game-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 2rem;
+      max-width: calc(100% - 280px);
+    }
+
+    .game-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: .8rem;
+    }
+
+    .player-chip {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(242, 183, 5, 0.25);
+      border-radius: 50px;
+      padding: .45rem 1.1rem .45rem .5rem;
+    }
+
+    .player-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--stage-deep);
+      font-size: .85rem;
+    }
+
+    .player-chip-text {
+      font-size: .8rem;
+    }
+
+    .player-chip-text strong {
+      color: var(--gold-bright);
+    }
+
+    .topbar-right-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .safe-amount-chip {
+      font-size: .78rem;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.04);
+      padding: .4rem .9rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .safe-amount-chip strong {
+      color: var(--gold-bright);
+    }
+
+    .btn-quit {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.4);
+      color: #ff9a9a;
+      padding: .45rem 1.1rem;
+      border-radius: 50px;
+      font-size: .78rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-quit:hover {
+      background: rgba(220, 38, 38, 0.3);
+    }
+
+    .money-display {
+      text-align: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .money-display-label {
+      font-size: .7rem;
+      color: var(--text-dim);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .money-display-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--gold-bright);
+      text-shadow: 0 0 30px rgba(242, 183, 5, 0.4);
+    }
+
+    /* DIAMOND QUESTION CARD */
+    .question-card {
+      background: linear-gradient(145deg, rgba(14, 58, 122, 0.55), rgba(31, 95, 196, 0.25));
+      border: 1.5px solid rgba(242, 183, 5, 0.4);
+      border-radius: 20px;
+      padding: 1.8rem 2rem;
+      position: relative;
+      box-shadow: 0 0 50px rgba(31, 95, 196, 0.25), inset 0 0 60px rgba(31, 95, 196, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .question-card.q-enter {
+      animation: qEnter .5s ease;
+    }
+
+    @keyframes qEnter {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(.98)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .q-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+
+    .q-number-badge {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      background: rgba(242, 183, 5, 0.12);
+      padding: .35rem 1rem;
+      border-radius: 50px;
+      border: 1px solid rgba(242, 183, 5, 0.3);
+    }
+
+    .q-prize-badge {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .q-subject-badge {
+      font-size: .75rem;
+      background: rgba(255, 255, 255, 0.08);
+      padding: .3rem .8rem;
+      border-radius: 50px;
+      color: var(--text-dim);
+    }
+
+    .q-text {
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      font-weight: 600;
+      line-height: 1.6;
+      color: #fff;
+      margin-bottom: .3rem;
+      min-height: 2.5em;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .9rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      background: linear-gradient(135deg, rgba(14, 58, 122, 0.4), rgba(10, 15, 61, 0.6));
+      border: 1.5px solid rgba(242, 183, 5, 0.3);
+      border-radius: 50px;
+      padding: .8rem 1.2rem;
+      color: var(--text-light);
+      font-size: .92rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: all .22s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--gold-bright);
+      background: linear-gradient(135deg, rgba(31, 95, 196, 0.5), rgba(14, 58, 122, 0.5));
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(31, 95, 196, 0.3);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-btn.selected {
+      border-color: var(--gold-bright);
+      background: linear-gradient(135deg, rgba(242, 183, 5, 0.25), rgba(242, 183, 5, 0.1));
+      box-shadow: 0 0 20px rgba(242, 183, 5, 0.3);
+    }
+
+    .option-btn.correct-reveal {
+      border-color: var(--correct-green);
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.4), rgba(22, 163, 74, 0.15));
+      box-shadow: 0 0 25px rgba(22, 163, 74, 0.5);
+      animation: pulseCorrect 0.6s ease;
+    }
+
+    .option-btn.wrong-reveal {
+      border-color: var(--wrong-red);
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.4), rgba(220, 38, 38, 0.15));
+      box-shadow: 0 0 25px rgba(220, 38, 38, 0.5);
+    }
+
+    .option-btn.hidden-option {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes pulseCorrect {
+      0% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.03)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .opt-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(242, 183, 5, 0.2);
+      border: 1px solid rgba(242, 183, 5, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .78rem;
+      color: var(--gold-bright);
+      flex-shrink: 0;
+    }
+
+    .opt-text {
+      flex: 1;
+    }
+
+    .result-banner {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 0;
+      border-radius: 14px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all .35s ease;
+    }
+
+    .result-banner.show {
+      max-height: 60px;
+      opacity: 1;
+      padding: .9rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-banner.correct {
+      background: rgba(22, 163, 74, 0.18);
+      color: #86efac;
+      border: 1px solid rgba(22, 163, 74, 0.4);
+    }
+
+    .result-banner.wrong {
+      background: rgba(220, 38, 38, 0.18);
+      color: #fca5a5;
+      border: 1px solid rgba(220, 38, 38, 0.4);
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-lock {
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      color: var(--stage-deep);
+      border: none;
+      padding: .85rem 2.2rem;
+      border-radius: 50px;
+      font-size: .92rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all .2s;
+      box-shadow: 0 6px 20px rgba(242, 183, 5, 0.35);
+    }
+
+    .btn-lock:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(242, 183, 5, 0.5);
+    }
+
+    .btn-lock:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* LIFELINES */
+    .lifelines-row {
+      display: flex;
+      gap: .9rem;
+    }
+
+    .lifeline-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(242, 183, 5, 0.18), rgba(242, 183, 5, 0.05));
+      border: 2px solid var(--gold-bright);
+      color: var(--gold-bright);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: all .25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .lifeline-btn:hover:not(.used) {
+      transform: translateY(-3px) scale(1.07);
+      box-shadow: 0 8px 24px rgba(242, 183, 5, 0.4);
+      background: rgba(242, 183, 5, 0.3);
+    }
+
+    .lifeline-btn.used {
+      opacity: .25;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+
+    .lifeline-btn .lifeline-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--stage-deep);
+      border: 1px solid var(--gold-bright);
+      color: #fff;
+      font-size: .68rem;
+      padding: .4rem .7rem;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .lifeline-btn:hover .lifeline-tooltip {
+      opacity: 1;
+    }
+
+    /* PRIZE LADDER SIDEBAR */
+    .prize-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: rgba(4, 6, 26, 0.6);
+      border-left: 1px solid rgba(242, 183, 5, 0.2);
+      padding: 1.2rem 1rem;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+
+    .sidebar-title {
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-align: center;
+      margin-bottom: .8rem;
+    }
+
+    .ladder-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .55rem .9rem;
+      border-radius: 10px;
+      margin-bottom: .3rem;
+      font-size: .82rem;
+      color: var(--text-dim);
+      border: 1px solid transparent;
+      transition: all .2s;
+    }
+
+    .ladder-row.passed {
+      color: var(--gold-dim);
+    }
+
+    .ladder-row.current {
+      background: linear-gradient(135deg, rgba(242, 183, 5, 0.25), rgba(242, 183, 5, 0.08));
+      border-color: var(--gold-bright);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 0 18px rgba(242, 183, 5, 0.3);
+      transform: scale(1.03);
+    }
+
+    .ladder-row.checkpoint {
+      border-left: 3px solid var(--diamond-blue-light);
+    }
+
+    .ladder-row.checkpoint.current {
+      border-left: 3px solid var(--gold-bright);
+    }
+
+    .ladder-num {
+      font-weight: 600;
+      width: 22px;
+    }
+
+    /* ═══════════ RESULT SCREEN ═══════════ */
+    #resultScreen {
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2.5rem 1.5rem;
+      overflow-y: auto;
+    }
+
+    .result-card {
+      max-width: 760px;
+      width: 100%;
+      background: rgba(10, 15, 61, 0.7);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(242, 183, 5, 0.3);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .result-icon {
+      font-size: 3.5rem;
+      margin-bottom: .6rem;
+    }
+
+    .result-title {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      font-size: 1.5rem;
+      color: var(--gold-bright);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .result-player-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .result-player-chip {
+      background: rgba(255, 255, 255, 0.06);
+      padding: .5rem 1.2rem;
+      border-radius: 50px;
+      font-size: .85rem;
+      border: 1px solid rgba(242, 183, 5, 0.2);
+    }
+
+    .result-player-chip strong {
+      color: var(--gold-bright);
+    }
+
+    .result-money-box {
+      margin: 1.5rem 0;
+    }
+
+    .result-money-label {
+      font-size: .75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .result-money-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--gold-bright);
+      text-shadow: 0 0 40px rgba(242, 183, 5, 0.4);
+    }
+
+    .result-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .result-stat {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .result-stat-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .result-stat-label {
+      font-size: .72rem;
+      color: var(--text-dim);
+      margin-top: .2rem;
+    }
+
+    .result-stat.correct .result-stat-num {
+      color: #86efac;
+    }
+
+    .result-stat.wrong .result-stat-num {
+      color: #fca5a5;
+    }
+
+    .breakdown-title,
+    .history-title {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      margin: 1.8rem 0 1rem;
+      text-align: left;
+      letter-spacing: .04em;
+    }
+
+    .subject-breakdown {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .6rem;
+      text-align: left;
+    }
+
+    .breakdown-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: .6rem .9rem;
+      border-radius: 10px;
+      font-size: .82rem;
+    }
+
+    .breakdown-label {
+      flex: 1;
+    }
+
+    .breakdown-score {
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+
+    .history-list {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: .4rem;
+    }
+
+    .history-item {
+      display: flex;
+      gap: .8rem;
+      align-items: flex-start;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: .8rem 1rem;
+      border-left: 3px solid transparent;
+    }
+
+    .history-item.history-correct {
+      border-left-color: var(--correct-green);
+    }
+
+    .history-item.history-wrong {
+      border-left-color: var(--wrong-red);
+    }
+
+    .history-q-num {
+      font-weight: 700;
+      color: var(--text-dim);
+      font-size: .78rem;
+      flex-shrink: 0;
+      width: 30px;
+    }
+
+    .history-q-body {
+      flex: 1;
+    }
+
+    .history-q-text {
+      font-size: .84rem;
+      color: #fff;
+      margin-bottom: .3rem;
+    }
+
+    .history-ans-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: .74rem;
+      color: var(--text-dim);
+    }
+
+    .history-icon {
+      font-size: 1rem;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-result-primary {
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+      color: var(--stage-deep);
+      border: none;
+      padding: .9rem 2.2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-result-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(242, 183, 5, 0.4);
+    }
+
+    .btn-result-secondary {
+      background: transparent;
+      border: 1.5px solid rgba(242, 183, 5, 0.4);
+      color: var(--gold-bright);
+      padding: .9rem 2.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all .2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-result-secondary:hover {
+      background: rgba(242, 183, 5, 0.1);
+    }
+
+    /* ═══════════ MODALS (Expert / Audience) ═══════════ */
+    .lifeline-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .lifeline-modal-overlay.open {
+      display: flex;
+    }
+
+    .lifeline-modal {
+      background: linear-gradient(145deg, var(--stage-navy), var(--stage-navy2));
+      border: 1.5px solid var(--gold-bright);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 0 60px rgba(242, 183, 5, 0.25);
+      position: relative;
+    }
+
+    .modal-icon {
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: .8rem;
+    }
+
+    .modal-title {
+      text-align: center;
+      color: var(--gold-bright);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .expert-message-box {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 1.2rem;
+      font-size: .92rem;
+      line-height: 1.7;
+      color: var(--text-light);
+      margin-bottom: 1.2rem;
+      border-left: 3px solid var(--gold-bright);
+    }
+
+    .audience-row {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .8rem;
+    }
+
+    .audience-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(242, 183, 5, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .78rem;
+      color: var(--gold-bright);
+      flex-shrink: 0;
+    }
+
+    .audience-track {
+      flex: 1;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .audience-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+      border-radius: 10px;
+      width: 0%;
+      transition: width 1s ease-out;
+    }
+
+    .audience-pct {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      width: 38px;
+      text-align: right;
+    }
+
+    .btn-modal-close {
+      width: 100%;
+      background: rgba(242, 183, 5, 0.15);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+      padding: .7rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: .5rem;
+      font-family: 'Poppins', sans-serif;
+      transition: all .2s;
+    }
+
+    .btn-modal-close:hover {
+      background: rgba(242, 183, 5, 0.3);
+    }
+
+    /* ═══════════ RESPONSIVE ═══════════ */
+    @media(max-width:980px) {
+      #gameScreen {
+        flex-direction: column;
+      }
+
+      .game-main {
+        max-width: 100%;
+        padding: 1.2rem;
+      }
+
+      .prize-sidebar {
+        width: 100%;
+        max-height: 200px;
+        border-left: none;
+        border-top: 1px solid rgba(242, 183, 5, 0.2);
+        order: 3;
+      }
+
+      .ladder-row {
+        display: inline-flex;
+        margin-right: .4rem;
+      }
+
+      .prize-sidebar {
+        display: flex;
+        overflow-x: auto;
+        gap: .4rem;
+        white-space: nowrap;
+      }
+
+      .sidebar-title {
+        display: none;
+      }
+    }
+
+    @media(max-width:680px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome-rules {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .result-stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .subject-breakdown {
+        grid-template-columns: 1fr;
+      }
+
+      .lifelines-row {
+        gap: .6rem;
+      }
+
+      .lifeline-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+      }
+
+      .q-text {
+        min-height: auto;
+      }
+
+      .action-row {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+
+      .btn-lock {
+        width: 100%;
+      }
+
+      .btn-quit {
+        align-self: flex-end;
+      }
+    }
+
+    @media(max-width:480px) {
+      .class-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .setup-card {
+        padding: 1.8rem 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════ WELCOME SCREEN ═══════════ -->
+  <div class="screen active" id="welcomeScreen">
+    <div class="welcome-logo">श</div>
+    <div class="welcome-eyebrow">Brain Booster Game</div>
+    <h1 class="welcome-title">कौन बनेगा<br />विद्या विजेता?</h1>
+    <p class="welcome-sub">Test your knowledge across 6 subjects — KBC style!</p>
+    <div class="welcome-school">Presented by <strong>Shri Shashi High School Gorsi</strong> | श्री शशि हाई स्कूल गोरसी
+    </div>
+    <button class="btn-start" onclick="goToSetup()"><i class="fas fa-play"></i>&nbsp; Play Now — खेल शुरू करें</button>
+
+    <div class="welcome-rules">
+      <div class="rule-chip"><i class="fas fa-graduation-cap"></i><span>Class 5th to 10th — choose your level</span>
+      </div>
+      <div class="rule-chip"><i class="fas fa-layer-group"></i><span>6 subjects: Math, Hindi, English, Science,
+          S.Science + GK</span></div>
+      <div class="rule-chip"><i class="fas fa-life-ring"></i><span>3 lifelines: Expert, Audience Poll, 50-50</span>
+      </div>
+      <div class="rule-chip"><i class="fas fa-infinity"></i><span>No time limit — answer at your own pace</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ SETUP SCREEN ═══════════ -->
+  <div class="screen" id="setupScreen">
+    <div class="setup-card">
+      <div class="setup-title">अपनी जानकारी भरें</div>
+      <div class="setup-sub">Enter your details to begin the quiz</div>
+
+      <label class="setup-label">आपका नाम — Your Name</label>
+      <input class="setup-input" id="playerNameInput" type="text" placeholder="e.g. Anshika Rathour" maxlength="40" />
+      <div class="field-error" id="nameError">⚠ कृपया अपना नाम लिखें</div>
+
+      <label class="setup-label">अपनी कक्षा चुनें — Select Your Class</label>
+      <div class="class-grid">
+        <div class="class-pill" data-class="5" onclick="selectClassPill(this)">5th</div>
+        <div class="class-pill" data-class="6" onclick="selectClassPill(this)">6th</div>
+        <div class="class-pill" data-class="7" onclick="selectClassPill(this)">7th</div>
+        <div class="class-pill" data-class="8" onclick="selectClassPill(this)">8th</div>
+        <div class="class-pill" data-class="9" onclick="selectClassPill(this)">9th</div>
+        <div class="class-pill" data-class="10" onclick="selectClassPill(this)">10th</div>
+      </div>
+      <div class="field-error" id="classError">⚠ कृपया अपनी कक्षा चुनें</div>
+
+      <button class="btn-play" onclick="beginGameFromSetup()"><i class="fas fa-rocket"></i>&nbsp; Start Quiz</button>
+      <a class="setup-back" onclick="showScreen('welcomeScreen')">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- ═══════════ GAME SCREEN ═══════════ -->
+  <div class="screen" id="gameScreen">
+    <div class="game-main">
+      <div class="game-topbar">
+        <div class="player-chip">
+          <div class="player-avatar" id="playerAvatarLetter">A</div>
+          <div class="player-chip-text"><strong id="playerNameDisplay">—</strong> &nbsp;|&nbsp; <span
+              id="playerClassDisplay">—</span></div>
+        </div>
+        <div class="topbar-right-group">
+          <div class="safe-amount-chip">Safe Amount: <strong id="safeAmountDisplay">₹0</strong></div>
+          <button class="btn-quit" onclick="confirmQuit()"><i class="fas fa-door-open"></i> Quit</button>
+        </div>
+      </div>
+
+      <div class="money-display">
+        <div class="money-display-label">Current Prize</div>
+        <div class="money-display-value" id="currentMoneyDisplay">₹0</div>
+      </div>
+
+      <div class="question-card" id="questionCard">
+        <div class="q-meta-row">
+          <span class="q-number-badge" id="qNumber">Question 1 / 20</span>
+          <span class="q-subject-badge" id="qSubjectBadge">📖 हिंदी</span>
+          <span class="q-prize-badge" id="qPrize">₹100</span>
+        </div>
+        <div class="q-text" id="qText">Loading question...</div>
+        <div class="result-banner" id="resultBanner"></div>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="action-row">
+          <div class="lifelines-row">
+            <button class="lifeline-btn" id="lifeline-fifty" onclick="KBC.useFiftyFifty()">
+              50:50<span class="lifeline-tooltip">50-50</span>
+            </button>
+            <button class="lifeline-btn" id="lifeline-audience" onclick="KBC.useAudiencePoll()">
+              <i class="fas fa-users"></i><span class="lifeline-tooltip">Audience Poll</span>
+            </button>
+            <button class="lifeline-btn" id="lifeline-expert" onclick="KBC.useExpertAdvice()">
+              <i class="fas fa-user-tie"></i><span class="lifeline-tooltip">Expert Advice</span>
+            </button>
+          </div>
+          <button class="btn-lock" id="lockBtn" disabled onclick="KBC.lockAnswer()">🔒 Lock Answer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prize-sidebar">
+      <div class="sidebar-title">Prize Ladder</div>
+      <div id="prizeLadder"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ RESULT SCREEN ═══════════ -->
+  <div class="screen" id="resultScreen">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <div class="result-title" id="resultTitle">Result</div>
+
+      <div class="result-player-row">
+        <div class="result-player-chip">👤 <strong id="resultPlayerName">—</strong></div>
+        <div class="result-player-chip">🎓 <span id="resultPlayerClass">—</span></div>
+        <div class="result-player-chip">📋 Reached: <strong id="resultQuestionsReached">0/20</strong></div>
+      </div>
+
+      <div class="result-money-box">
+        <div class="result-money-label">Total Winnings</div>
+        <div class="result-money-value" id="resultMoney">₹0</div>
+      </div>
+
+      <div class="result-stats-grid">
+        <div class="result-stat correct">
+          <div class="result-stat-num" id="resultCorrect">0</div>
+          <div class="result-stat-label">Correct Answers</div>
+        </div>
+        <div class="result-stat wrong">
+          <div class="result-stat-num" id="resultWrong">0</div>
+          <div class="result-stat-label">Wrong Answers</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-num">300+</div>
+          <div class="result-stat-label">Question Bank</div>
+        </div>
+      </div>
+
+      <div class="breakdown-title">📊 Subject-wise Performance</div>
+      <div class="subject-breakdown" id="subjectBreakdown"></div>
+
+      <div class="history-title">📝 Question Review</div>
+      <div class="history-list" id="historyList"></div>
+
+      <div class="result-actions">
+        <button class="btn-result-primary" onclick="restartGame()"><i class="fas fa-redo"></i>&nbsp; Play Again</button>
+        <a class="btn-result-secondary" href="index.html"><i class="fas fa-home"></i>&nbsp; Back to School Website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ EXPERT ADVICE MODAL ═══════════ -->
+  <div class="lifeline-modal-overlay" id="expertModal">
+    <div class="lifeline-modal">
+      <div class="modal-icon">👨‍🏫</div>
+      <div class="modal-title">Expert Advice</div>
+      <div class="expert-message-box" id="expertMessage">—</div>
+      <button class="btn-modal-close" onclick="closeExpertModal()">Got it, Continue</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ AUDIENCE POLL MODAL ═══════════ -->
+  <div class="lifeline-modal-overlay" id="audienceModal">
+    <div class="lifeline-modal">
+      <div class="modal-icon">👥</div>
+      <div class="modal-title">Audience Poll Results</div>
+      <div id="audienceBars"></div>
+      <button class="btn-modal-close" onclick="closeAudienceModal()">Got it, Continue</button>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="game.js"></script>
+  <script src="ui.js"></script>
+</body>
+
+</html>
